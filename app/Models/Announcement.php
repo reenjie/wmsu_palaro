@@ -13,6 +13,8 @@ class Announcement extends Model
 
     protected $fillable = [     
         'announcement',
+        'CollegeId',
         'date_added',
+        'sports_id',
     ];
 }

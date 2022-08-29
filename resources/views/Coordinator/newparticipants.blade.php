@@ -6,7 +6,7 @@
          <div class="card shadow-sm bg-transparent">
             <div class="card-body">
                <div class="container">
-                  <button class="btn btn-dark btn-sm px-4 mb-3" onclick="window.location.href='{{route('coordinator.add_participants')}}' ">Add</button>   
+                 {{--  <button class="btn btn-dark btn-sm px-4 mb-3" onclick="window.location.href='{{route('coordinator.add_participants')}}' ">Add</button>    --}}
 
                   <button class="btn btn-light text-primary btn-sm px-4 mb-3" onclick="window.location.href='{{route('coordinator.participants')}}' ">Back</button>   
                   @if (Session::get('Success'))
@@ -107,7 +107,8 @@
                                  <span style="font-size:14px">
                                @if($row->submitted_req)  
                               @foreach (explode(',',$row->submitted_req) as $item)
-                              <span style="font-size:12px" class="hf">   * {{$item}} <br> </span>
+                              
+                              <a href="{{asset('assets/img').'/'.$item}}" target="blank_" style="font-size:13px;text-decoration:none">{{$item}} <i class="fas fa-download"></i></a> <br>
                               @endforeach
                               @else
                              <span style="font-size:12px" class="hf">There was no submitted Requirements</span> 

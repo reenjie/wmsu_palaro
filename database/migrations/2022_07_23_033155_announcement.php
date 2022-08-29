@@ -16,7 +16,10 @@ return new class extends Migration
         //
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
-            $table->text('announcement');     
+            $table->text('announcement');
+            $table->integer('CollegeId');     
+            $table->integer('sports_id')->nullable();
+            $table->integer('isactive')->nullable();
             $table->datetime('date_added');
         });
     }

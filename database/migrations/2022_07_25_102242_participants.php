@@ -22,6 +22,7 @@ return new class extends Migration
             $table->datetime('date_added');
             $table->text('submitted_req');
             $table->integer('isverified');
+            $table->integer('team')->nullable();
             $table->integer('status');
         });
     }

@@ -6,23 +6,116 @@ use App\Models\Announcement;
 use App\Models\Participant;
 use App\Models\Sportevent;
 use App\Models\User;
+use App\Models\Blacklist;
+use App\Models\Videolink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 
 class CoordinatorCOntroller extends Controller
 {   
+    public function Profile(){
+        $collegeid = Auth::user()->CollegeId;
+        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get();  
+        $college = College::where('id',Auth::user()->CollegeId)->get();
+        $count=count($participants);
+        return view('Coordinator.profile',compact('count','college'));
+    }
+
+    public function updatecoordinator($id,$name){
+    
+        $data = User::where('id',$id)->get();
+    
+        if($name == 'Student'){
+            $college =  College::all();
+            $default_college =DB::select('select id,name from colleges where id in (select CollegeId from users where id = ? ) ',[$id]);
+    
+        }else if ($name =='Coordinator'){
+            $college =  DB::select('select * from colleges where id not in (select CollegeId from users  where user_type ="coordinator" )');  
+            $default_college =DB::select('select id,name from colleges where id in (select CollegeId from users where id = ? ) ',[$id]);
+        }else{
+            $college = '';
+            $default_college ='';
+        }
+      
+        $collegeid = Auth::user()->CollegeId;
+        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get();  
+        $college = College::where('id',Auth::user()->CollegeId)->get();
+        $count=count($participants);
+    
+        return view('Coordinator.action.edit',compact('data','name','college','default_college','count','college'));
+    }
+
+    
+public function update_coordinator(Request $request){
+    $id = $request->input('id');
+    $pass = $request->input('password');
+    $usertype =$request->input('usertype');
+    if($pass == ''){
+     User::where('id',$id)->update([
+         'name' => $request->input('name'),
+         'email' => $request->input('email'),
+         'address'=> $request->input('address'),
+         'contactno'=> $request->input('contactno'), 
+         'CollegeId' => $request -> input('college'),
+         ]);
+    }else {
+
+    User::where('id',$id)->update([
+     'name' => $request->input('name'),
+     'email' => $request->input('email'),
+     'address'=> $request->input('address'),
+     'contactno'=> $request->input('contactno'),
+     'CollegeId' => $request -> input('college'),
+     'password' => Hash::make($request->input('password')),
+     ]);
+    }
+
+    if($usertype =='student'){
+        return redirect(route('admin.students'))->with('Success','Account Updated Successfully!');
+    
+    }else if($usertype =='coordinator'){
+    
+        return redirect(route('coordinator.coordinators'))->with('Success','Account Updated Successfully!');
+    
+    }else {
+        return redirect(route('coordinator.profile'))->with('Success','Account Updated Successfully!');
+    
+    }
+    
+
+   
+}
     public function dashboard(){
         $collegeid = Auth::user()->CollegeId;
+     
+        $coordinator = User::where('user_type','ecoordinator')->get();
+        $students = User::where('user_type','student')->where('CollegeId',$collegeid)->get();
+    
+        $sport = Sportevent::where('CollegeId',$collegeid)->get();
+        $allparticipants = DB::select('select * from users where id in (select user_id from participants where CollegeId='.$collegeid.')');
+
+        $nop = DB::select('select sports_id,COUNT(sports_id) as nop from participants group by sports_id');
+
+        $collegewevent = DB::select('select * from colleges where id in (select CollegeId from participants)');
+
+        $vlinks = Videolink::where('CollegeId',$collegeid)->get();
+        $pts = Participant::where('CollegeId',$collegeid)->get();
+
+      
+        $user = User::where('CollegeId',$collegeid)->where('user_type','student')->get(); 
+     
+        
+       
+        $college = College::where('id',Auth::user()->CollegeId)->get();
        
         $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get();  
-        $user = User::where('CollegeId',$collegeid)->where('user_type','student')->get(); 
 
         $count=count($participants);
-        $college = College::where('id',Auth::user()->CollegeId)->get();
-        return view('Coordinator.dashboard',compact('college','count'));
+        
+       return view('Coordinator.dashboard',compact('college','count','coordinator','students','user','sport','participants','collegewevent','allparticipants','vlinks','pts','nop'));  
     }
     public function announcement(){
         $collegeid = Auth::user()->CollegeId;
@@ -31,54 +124,50 @@ class CoordinatorCOntroller extends Controller
         $user = User::where('CollegeId',$collegeid)->where('user_type','student')->get(); 
 
         $count=count($participants);
-        $announcement = Announcement::all()->SortByDesc('date_added');
+        $announcement = Announcement::where('CollegeId',$collegeid)->get()->SortByDesc('date_added');
         $counts = count($announcement);
         $college = College::where('id',Auth::user()->CollegeId)->get();
         return view('Coordinator.announcement',compact('college','announcement','count','counts'));
     }
-    public function media(){
+   /*  public function media(){
         $collegeid = Auth::user()->CollegeId;
        
         $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get();  
         $user = User::where('CollegeId',$collegeid)->where('user_type','student')->get(); 
-
+        $college = College::where('id',Auth::user()->CollegeId)->get();
         $count=count($participants);
-      
-       
+        $sportsdata = Sportevent::where('CollegeId',$collegeid)->get();
         
+        $video = Videolink::all();
+
         $user = User::where('CollegeId',$collegeid)->where('user_type','student')->get(); 
 
        
         $college = College::where('id',Auth::user()->CollegeId)->get();
-        return view('Coordinator.media',compact('college','count'));
-    }
-    public function sportevents(){
-        $id = Auth::user()->CollegeId;
-       
-       
-        $participants = Participant::where('CollegeId',$id)->where('isverified','0')->get();  
-        $user = User::where('CollegeId',$id)->where('user_type','student')->get(); 
+        return view('Coordinator.media',compact('college','count','college','sportsdata','video'));
+    } */
 
-        $count=count($participants);
-        $sportsdata = Sportevent::where('CollegeId',$id)->get();
-        //$count = count($sportsdata);
-        $college = College::where('id',Auth::user()->CollegeId)->get();
-        return view('Coordinator.sportevents',compact('college','sportsdata','count'));
-    }
+
 
     public function participants(){
         $collegeid = Auth::user()->CollegeId;
        
-        $participants = Participant::where('CollegeId',$collegeid)->get();  
-        $user = User::where('CollegeId',$collegeid)->where('user_type','student')->get(); 
+        $participants = Participant::all();  
+
+        $user =DB::select('select * from users where id in (select user_id from participants where  isverified = 2  or isverified=1 ) and CollegeId = '.$collegeid.' '); 
 
         $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
         $count=count($counting_participants);
        
-        $sportevent= Sportevent::where('CollegeId',$collegeid)->get(); 
+
+        $sportevent= Sportevent::all(); 
         $college = College::where('id',Auth::user()->CollegeId)->get();
         return view('Coordinator.participants',compact('college','participants','user','sportevent','count'));
     }
+
+
+
+
 
     public function newparticipants(){
         $collegeid = Auth::user()->CollegeId;
@@ -92,24 +181,20 @@ class CoordinatorCOntroller extends Controller
         $participants = Participant::where('CollegeId',$collegeid)->get();  
         $user = User::where('CollegeId',$collegeid)->where('user_type','student')->get(); 
        
-        $sportevent= Sportevent::where('CollegeId',$collegeid)->get(); 
+        $sportevent= Sportevent::all(); 
         $college = College::where('id',Auth::user()->CollegeId)->get();
         return view('Coordinator.newparticipants',compact('college','participants','user','sportevent','count'));
     }
 
-    public function add_sports_events(){
-        $collegeid = Auth::user()->CollegeId;
-        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
-        $count=count($counting_participants);
-        $college = College::where('id',Auth::user()->CollegeId)->get();
-        return view('Coordinator.action.add_sportsevent',compact('college','count'));
-    }
+    
 
     public function add_announcement(Request $request){
 
 
        Announcement::create([
         'announcement' => $request->input('announce'),
+        'CollegeId' => Auth::user()->CollegeId,
+        'sports_id'=>0,
         'date_added' => now(),
        ]);
 
@@ -133,146 +218,31 @@ class CoordinatorCOntroller extends Controller
     }
 
 
-    public function add_sports(Request $request){
+
+
+
+
+ 
+    public function students(){
         $collegeid = Auth::user()->CollegeId;
-      
-        $request->validate([
-            'eventname' => 'required',
-            /* 'datestart' => 'required',
-            'dateend' =>'required', */
-            'description'=>'required',
-          /*   'timestart'=>'required',
-            'timeend'=>'required', */
-            'rulesandregulation'=>'required',
-            'requirements'=>'required',
-        ],[
-            'required' => 'Required *',
-        ]);
-        $imageName = '';
-        if($request->file('imgfile')){
-            $imageName = time().'.'.$request->file('imgfile')->getClientOriginalExtension();
-            $request->file('imgfile')->move(public_path('assets/img'), $imageName);
-          }
-
-          if($imageName){
-            $file = $imageName;
-          }else{
-            $file = '';
-          }
-        
-        Sportevent::create([
-            'name' => $request->input('eventname'),
-            'datestart'=>$request->input('datestart'),
-            'dateend'=>$request->input('dateend'),
-            'description'=>$request->input('description'),
-            'timestart'=>$request->input('timestart'),
-            'timeend'=>$request->input('timeend'),
-            'rules_regulation'=> $request->input('rulesandregulation'),
-            'requirements'=>$request->input('requirements'),
-            'file'=>$file,
-            'nop' => $request->input('numofparticipants'),
-            'nor' => $request->input('numofrounds'),
-            'CollegeId'=>$collegeid,
-            'date_added'=>now(),
-        ]);
-
-        return redirect()->route('coordinator.sportevents')->with('Success','Sport/Events Added Successfully!');
-
-    }
-
-    public function edit_sports(Request $request){
-        $collegeid = Auth::user()->CollegeId;
-        $id = $request->input('sid');
        
-        
-        $request->validate([
-          
-            /* 'datestart' => 'required',
-            'dateend' =>'required', */
-            'description'=>'required',
-          /*   'timestart'=>'required',
-            'timeend'=>'required', */
-            'rulesandregulation'=>'required',
-            'requirements'=>'required',
-        ],[
-            'required' => 'This field is Required',
-        ]);
-      $imageName = '';
-        if($request->file('imgfile')){
-            $imageName = time().'.'.$request->file('imgfile')->getClientOriginalExtension();
-            $request->file('imgfile')->move(public_path('assets/img'), $imageName);
+        $participants = Participant::where('CollegeId',$collegeid)->get();  
 
-            $filedata =  Sportevent::select('file')->where('id',$id)->get();
-            foreach ($filedata as $key => $value) {
-                
-              
-                
-               try {
-                $myfile = public_path('assets/img/' . $value->file);
-                   unlink($myfile);
-               } catch (\Throwable $th) {}
-    
-            }
+        $user =DB::select('select * from users where id in (select user_id from participants where isverified = 2  or isverified=1 ) and CollegeId = '.$collegeid.' '); 
 
-          }
-
-          if($imageName){
-            $file = $imageName;
-          }else{
-            $filedata =  Sportevent::select('file')->where('id',$id)->get();
-            foreach ($filedata as $key => $value) {
-                
-              
-               $file = $value->file;
-     
-             }
-       
-          }
-        
-        Sportevent::where('id',$id)->update([
-            'name' => $request->input('eventname'),
-            'datestart'=>$request->input('datestart'),
-            'dateend'=>$request->input('dateend'),
-            'description'=>$request->input('description'),
-            'timestart'=>$request->input('timestart'),
-            'timeend'=>$request->input('timeend'),
-            'rules_regulation'=> $request->input('rulesandregulation'),
-            'requirements'=>$request->input('requirements'),
-            'file'=>$file,
-            'nop' => $request->input('numofparticipants'),
-            'nor' => $request->input('numofrounds'),
-            'CollegeId'=>$collegeid,
-            'date_added'=>now(),
-        ]);
-
-        return redirect()->route('coordinator.sportevents')->with('Success','Sport/Events Updated Successfully!'); 
-
-    }
-
-    public function delete_sportevents($id){
-        $filedata =  Sportevent::select('file')->where('id',$id)->get();
-     foreach ($filedata as $key => $value) {
-       
-        try {
-            unlink($value->file);
-        } catch (\Throwable $th) {}
-     }
-    Sportevent::where('id',$id)->delete();
-        return redirect()->route('coordinator.sportevents')->with('Success','Sport/Events and other data connected was Deleted Successfully!'); 
-
-    }
-
-    public function edit_sportevents($id){
-        $collegeid = Auth::user()->CollegeId;
         $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
         $count=count($counting_participants);
-      $college = College::where('id',Auth::user()->CollegeId)->get();
-       $data =  Sportevent::where('id',$id)->get();
-      
-        return view('Coordinator.action.edit_sports',compact('college','data','count'));
-     
+       
+
+        $sportevent= Sportevent::where('CollegeId',$collegeid)->get(); 
+        $college = College::where('id',Auth::user()->CollegeId)->get();
+        $data = User::where('CollegeId',$collegeid)->get();
+       
+        return view('Coordinator.students',compact('college','participants','user','sportevent','count','data'));
+
 
     }
+  
 
     public function verify($id){
         Participant::where('id',$id)->update([
@@ -284,6 +254,24 @@ class CoordinatorCOntroller extends Controller
     }
 
     public function delete_participants($id){
+
+        $files =  Participant::where('id',$id)->get();
+
+        try {
+         foreach ($files as $key => $value) {
+             $allfiles = $value->submitted_req;
+              }
+       
+             $unsetfiles =  explode(',',$allfiles);
+       
+             foreach ($unsetfiles as $key => $value) {
+              $link = public_path('assets/img/').$value;
+              unlink($link);
+              
+             }
+        } catch (\Throwable $th) {
+        
+        }
      
         Participant::where('id',$id)->delete();
 
@@ -311,7 +299,8 @@ class CoordinatorCOntroller extends Controller
           $college = College::where('id',Auth::user()->CollegeId)->get();
           $sportsdata = Sportevent::where('CollegeId',$collegeid)->get();
           $sportevent =  $request->input('sportsevent');
-        $data = DB::select('select * from users where id not in (select user_id from participants where sports_id='.$sportevent.' and CollegeId ='.$collegeid.' and user_type="student")');
+        
+          $data = DB::select('select * from users where id not in (select user_id from participants where sports_id='.$sportevent.' and CollegeId ='.$collegeid.' and user_type="student") and id not in (select user_id from blacklists where sports_id='.$sportevent.') and CollegeId = '.$collegeid.'');
         $selected = $request->input('selected_ids');
 
         $sportevent =  $request->input('sportsevent');
@@ -363,5 +352,115 @@ class CoordinatorCOntroller extends Controller
 
     
     }
+
+    public function blacklist(){
+        $collegeid = Auth::user()->CollegeId;
+        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
+        $count=count($counting_participants);
+        $college = College::where('id',Auth::user()->CollegeId)->get();
+        $sports = Sportevent::all();
+
+        $data = User::all();
+
+        $blacklisted = Blacklist::where('CollegeId',$collegeid)->get();
+
+        return view('Coordinator.blacklist',compact('college','count','data','sports','blacklisted'));
+    }
+
+    public function addblacklist($id,$name){
+       
+      $collegeid = Auth::user()->CollegeId;
+        $data = DB::select('select * from users where id not in (select user_id from blacklists where sports_id ='.$id.') and id not in (select user_id from participants where sports_id ='.$id.') and CollegeId='.$collegeid.' ');
+        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
+        $count=count($counting_participants);
+        $college = College::where('id',Auth::user()->CollegeId)->get();
+
+        return view('Coordinator.action.add_blacklist',compact('college','id','data','count','name')); 
+
+    }
+
+    public function addlist_blacklist(Request $request){
+        $event = $request->input('event');
+        $select = $request->input('selected_ids');
+        $collegeid = Auth::user()->CollegeId;
+        foreach ($select as $key => $value) {
+        
+          Blacklist::create([
+            'sports_id'=>$event,
+            'user_id'=>$value,
+            'CollegeId'=>$collegeid,
+          ]);
+        }
+       
+
+        return redirect()->route('coordinator.blacklist');
+    }
+
+    public function removefrom_blacklist($id,$event){
+        Blacklist::where('sports_id',$event)->where('user_id',$id)->delete();
+        return redirect()->route('coordinator.blacklist');
+    }
+    
+    public function addvideolinks($id,$name){
+        $collegeid = Auth::user()->CollegeId;
+        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
+        $count=count($counting_participants);
+        $college = College::where('id',Auth::user()->CollegeId)->get();
+
+        $videos = Videolink::where('event',$id)->where('CollegeId',$collegeid)->get();
+
+    
+        return view('coordinator.action.addvideolinks',compact('college','count','name','videos','id'));
+    }
+
+    public function savelink(Request $request){
+     
+        $eventid = $request->event;
+        $collegeid = Auth::user()->CollegeId;
+        $event = Videolink::where('event',$eventid)->get();
+
+        if(count($event)>=1){
+            Videolink::where('event',$eventid)->update([
+
+                'video' => $request->link,
+                'videotype' => $request->vtype,
+            
+            ]);
+
+        }else{
+            Videolink::create([
+
+                'video' => $request->link,
+                'videotype' => $request->vtype,
+                'priority' =>0,
+                'event' => $eventid,
+                'CollegeId'=>$collegeid,
+                'date_added'=>now(),
+            
+            ]);
+
+        }
+
+
+      /*   Videolink::where('id',1)->update([
+        'video' => $request->link,
+        'videotype' => $request->vtype,
+    
+    ]);  */
+    }
+
+
+    
+    public function firslogin(Request $request){
+        $id = Auth::user()->id;
+
+        User::where('id',$id)->update([
+            'fl'=>1,
+            'password'=>Hash::make($request->newpass),
+        ]);
+       
+    }
+
+
 
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('video')->unique();
             $table ->text('videotype');
             $table-> integer('priority');
+            $table -> integer('event');
             $table-> integer('CollegeId');
             $table->datetime('date_added');
         });

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('images')->unique();
             $table ->integer('priority');
+            $table->integer('sports_id')->nullable();
+            $table->integer('isactive')->nullable();
             $table->datetime('date_added');
         });
     }

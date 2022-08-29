@@ -2,81 +2,73 @@
 @section('content')
 
    <div class="container">
-        <h6 class="af mb-3" style="font-weight:bold;font-size:18px">MEDIA</h6>
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-          <div class="container">
-            <h6 class="af">Stream Links</h6>
-                
-                   
-
-            <textarea name="" style="resize: none" class="form-control mb-2" id="links" id="" cols="5" rows="5" placeholder="Enter URL or Embedded video code(Facebook) to Change the Current Video"></textarea>
-            <div class="invalid-feedback mb-2">
-              <span style="font-size:13px" class="af">Please provide link first!</span>
-            </div>
-
-            <button class="btn btn-danger btn-sm" id="youtube">Youtube</button>
-            <button class="btn btn-primary btn-sm" id="facebook">Facebook</button> 
-          </div>
-        </div>
-        <div class="col-md-2"></div>
-        </div>
-        <div class="row">
+    <h6 class="af mb-3" style="font-weight:bold;font-size:18px">MEDIA</h6>
+    <div class="table-responsive">
+      <table class="table table-striped table-sm table-hover table-bordered" id="myTable" style="font-size:14px">
+         <thead>
            
-                <div class="container">
-                     <div class="row">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                            <div class="" id="youtubevideo">
-                      
-                                <br>
-                                   <iframe id="ycvideo"  width="400" style="background-color: grey" height="315" src="" frameborder="0" allowfullscreen></iframe> 
-                                 </div>
-                                 <div class="d-none" id="facebookvideo">
-                               
-                                 
-                                 </div>
+            <tr class="table-dark " >
+            
+               <th>Sports/Event</th>
+              
+               <th>Link</th>
+               <th>Action</th>
+            </tr>
+         </thead>
+         <tbody>
+            @foreach ($sportsdata as $row)
+
+            @php
+            $src = '';
+          if($row->file == ''){
+             $src = 'https://st2.depositphotos.com/4137693/11314/v/450/depositphotos_113146534-stock-illustration-no-photo-camera-vector-sign.jpg';
+          }else {
+            $src =  asset('assets/img').'/'.$row->file;
+          }
+
+            @endphp
+            
+            <tr>
+            
+               <td style="font-weight: bold;text-align:center">
+               
+               
+                {{$row->name}}
+                <br>
+                <img src="{{$src}}" alt="" class="rounded-circle" style="width:80px;height:80px">
+              </td>
+               
              
-                                 <div id="main">
-                              
-                                 
-                              {{--    @foreach ($videos as $vid )
-                                 @if($vid->id == 1)
-                                   @if($vid->videotype == 'youtube')
-                                   <hr>
-                                   Main-video
-                                   <iframe id="ycvideo"  width="400" height="315" src="{{$vid->video}}" frameborder="0" allowfullscreen></iframe> 
-                                   @elseif($vid->videotype == 'facebook')
-                                   <hr>
-                                   Main-video
-                               
-                                   <div class="" id="facebookvideo">
-                                     {!!$vid->video!!}
-                                   </div>
+               <td>
              
-                                  
-                               
-                                   @endif
-                               
-                                 @endif
-                               
-                                 @endforeach --}}
-                                
-                               </div>
+                <ul class="list-group list-group-flush" style="font-size:14px">
+                  @foreach ($video as $link)
+                  @if ($link->event == $row->id)
+              
+                <li class="list-group-item">  {{$link->video}}</li>
+                <li class="list-group-item">Type :  {{$link->videotype}}</li>
+
+                  @else
+               
+                  @endif
+               
+                  @endforeach
+
+
              
-                                 
-                        </div>
-                        <div class="col-md-2"></div>
-                     </div>
-                  
+                 
+                </ul>
                 
-                  
-                  </div>
+               </td>
+               <td>
+                <button class="btn btn-light btn-sm text-primary" onclick="window.location.href='{{route('coordinator.addvideolinks',['id'=>$row->id,'name'=>$row->name])}}' ">MODIFY</button>
+               </td>
+            </tr>
+            @endforeach
+         </tbody>
+        </table>
+      </div>
 
-            </div>
-          
 
-        
    </div>
 @endsection

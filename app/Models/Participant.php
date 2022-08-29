@@ -18,6 +18,7 @@ class Participant extends Model
        'date_added',
        'submitted_req',
        'isverified',
+       'team',
        'status',
     ];
 }

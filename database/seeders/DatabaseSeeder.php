@@ -4,8 +4,14 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Carousel;
+use App\Models\Videolink;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
+
 {
     /**
      * Seed the application's database.
@@ -14,11 +20,51 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+       
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::create([
+            'name' =>'SuperAdmin',
+            'email' =>'admin@admin.com',
+            'password'=> Hash::make('password'),
+            'address' =>'fakeaddress',
+            'contactno'=>'00000',
+            'user_type' =>'superadmin',
+            'CollegeId' =>0,
+            'fl'=>1,
+            'sports_id' =>0,
+            'date_register'=>now(),
+            'image'=>'',
+             ]);
+
+        Carousel::create([
+            'images'=>'samp.jpg',
+            'priority'=>1,
+            'sports_id'=>null,
+            'isactive'=>null,
+            'date_added'=>now(),
+        ]);
+        Carousel::create([
+            'images'=>'samp2.jpg',
+            'priority'=>1,
+            'sports_id'=>null,
+            'isactive'=>null,
+            'date_added'=>now(),
+        ]);
+        Carousel::create([
+            'images'=>'samp3.jpg',
+            'priority'=>1,
+            'sports_id'=>null,
+            'isactive'=>null,
+            'date_added'=>now(),
+        ]);
+
+        Videolink::create([
+            'video'=>'https://www.youtube.com/watch?v=tPbeMrVLzpM',
+            'videotype'=>'youtube',
+            'priority'=>1,
+            'event'=>0,
+            'CollegeId'=>0,
+            'date_added'=>now(),
+        ]);
     }
 }

@@ -15,6 +15,7 @@ class Videolink extends Model
         'video',
         'videotype',
         'priority',
+        'event',
         'CollegeId',
         'date_added',
     ];

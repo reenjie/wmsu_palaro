@@ -26,6 +26,8 @@ class User extends Authenticatable
         'contactno',
         'user_type',
         'CollegeId',
+        'fl',
+        'sports_id',
         'date_register',
     ];
 

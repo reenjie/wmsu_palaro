@@ -7,7 +7,7 @@
                                     
                                     <h5 class="hf">Add new  
                                         @if($name == 'coordinator')
-                                        Sports/Event Coordinator
+                                        College Coordinator
                                         @elseif($name == 'student')
                                         Students
                                         @endif

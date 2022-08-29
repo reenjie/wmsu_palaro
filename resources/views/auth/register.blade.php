@@ -4,7 +4,7 @@
     <div class="container">
       
     
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" style="overflow:scroll;height:500px;overflow-x:hidden">
         <div class="col-md-8">
 
         <form method="POST" action="{{ route('register') }}">
@@ -35,7 +35,46 @@
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-              
+
+
+                    <label for="contact" class="af col-form-label text-md-end">{{ __('Contact No.') }}</label>
+
+             
+                    <input id="contact" type="number" class="af form-control @error('contact') is-invalid @enderror" onKeyPress="if(this.value.length==11) return false;"  name="contact" value="{{ old('contact') }}" required >
+
+                    @error('contact')
+                        <span class="invalid-feedback af" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                        
+                    <label for="address" class="af col-form-label text-md-end">{{ __('Address') }}</label>
+                       
+             
+                 
+                    <textarea style="resize: none" name="address" class="form-control @error('address') is-invalid @enderror " id="" cols="4" rows="4" required>{{old('address')}}</textarea>
+
+                    @error('address')
+                        <span class="invalid-feedback af" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
+                    @php
+                        use App\Models\College;
+                        $college = College::all();
+                    @endphp
+
+        <label for="college" class="af col-form-label text-md-end">{{ __('College') }}</label>
+        <select name="college" id="" class="form-select">
+            @foreach ($college as $item)
+            <option value="{{$item->id}}">{{$item->name}}</option>
+                            
+            @endforeach
+        </select>
+                      
+
+                 
 
          
                 <label for="password" class="af col-form-label text-md-end">{{ __('Password') }}</label>

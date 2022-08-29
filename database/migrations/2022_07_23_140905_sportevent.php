@@ -21,13 +21,14 @@ return new class extends Migration
             $table->date('dateend')->nullable();
             $table->time('timestart')->nullable();
             $table->time('timeend')->nullable();
-            $table->text('description');
-            $table->text('rules_regulation');
-            $table->text('requirements');
+            $table->text('description')->nullable();
+            $table->text('rules_regulation')->nullable();
+            $table->text('requirements')->nullable();
             $table->text('file')->nullable();
             $table->integer('nop');
             $table->integer('nor');
             $table->integer('CollegeId');
+            $table->text('istype')->nullable();
             $table->datetime('date_added');
         });
     }

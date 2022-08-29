@@ -1,4 +1,4 @@
-@extends('layouts.coordinator_layout')
+@extends('layouts.admin_layout')
 @section('content')
 
    <div class="container">
@@ -6,7 +6,7 @@
          <div class="card shadow-sm bg-transparent">
             <div class="card-body">
                <div class="container">
-                  <button class="btn btn-dark btn-sm px-4 mb-3" onclick="window.location.href='{{route('coordinator.add_sports_events')}}' ">Add</button>   
+                  <button class="btn btn-dark btn-sm px-4 mb-3" onclick="window.location.href='{{route('admin.add_sports_events')}}' ">Add</button>   
                   @if (Session::get('Success'))
                   <div class="alert alert-success alert-dismissable">
                       <strong class="hf">{{ Session::get('Success') }}</strong>
@@ -30,9 +30,19 @@
                      </thead>
                      <tbody>
                         @foreach ($sportsdata as $row)
-                          
+                          @php
+                          $src = '';
+                        if($row->file == ''){
+                           $src = 'https://st2.depositphotos.com/4137693/11314/v/450/depositphotos_113146534-stock-illustration-no-photo-camera-vector-sign.jpg';
+                        }else {
+                          $src =  asset('assets/img').'/'.$row->file;
+                        }
+
+                          @endphp
                         <tr>
-                           <td></td>
+                           <td>
+                              <img src="{{$src}}" alt="" class="rounded-circle" style="width:100px;height:100px">
+                           </td>
                            <td style="font-weight: bold">{{$row->name}}</td>
                            <td>
                               <button class="view btn btn-light text-info btn-sm" style="font-size:12px" data-bs-toggle="modal" data-bs-target="#exampleModal" 
@@ -244,9 +254,9 @@
            </div>
             
              
-           <img src="" id="img-view" alt="" style="width: 150px;position: absolute; top:20px;right:50px;border-radius:3px; " >
+   {{--         <img src="" id="img-view" alt="" style="width: 150px;position: absolute; top:20px;right:50px;border-radius:3px; " >
               
-                 
+                  --}}
                
                        
              

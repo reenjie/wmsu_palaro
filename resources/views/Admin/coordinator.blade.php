@@ -2,7 +2,7 @@
 @section('content')
 
             <div class="container">
-                        <h5 class="af">Sport/Event Coordinators</h5>
+                        <h5 class="af">College Coordinators</h5>
                       {{--   {{ Auth::user()->name }}
                         {{ Auth::user()->email }}
                         {{ Auth::user()->password }}

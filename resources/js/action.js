@@ -13,6 +13,7 @@ function myFunction() {
   if (window.pageYOffset >= sticky) {
     navbar.classList.add("sticky")
     btnup.classList.remove("d-none");
+   
   } else {
     navbar.classList.remove("sticky");
     btnup.classList.add("d-none");

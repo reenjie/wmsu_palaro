@@ -15,6 +15,8 @@ class Carousel extends Model
     protected $fillable = [
         'images',
         'priority',
+        'sports_id',
+        'isactive',
         'date_added',
     ];
     

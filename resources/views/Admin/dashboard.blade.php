@@ -15,7 +15,7 @@
                               <div class="card-body">
                                 <h5 class="hf text-light">Coordinators</h5>
                                 <h6 class="af text-light" style="font-size:14px;" >
-                               <span class="badge bg-light text-dark" style="font-size:17px">145</span>  Accounts
+                               <span class="badge bg-light text-dark" style="font-size:17px">{{count($coordinator)}}</span>  Accounts
                                 </h6>
                                 <i  class="dashboardbanner fas fa-users-gear"></i>
                               </div>
@@ -26,7 +26,7 @@
                               <div class="card-body">
                                 <h5 class="hf text-light">Students</h5>
                                 <h6 class="af text-light" style="font-size:14px;" >
-                               <span class="badge bg-light text-dark" style="font-size:17px">145</span>  Accounts
+                               <span class="badge bg-light text-dark" style="font-size:17px">{{count($students)}}</span>  Accounts
                                 </h6>
                                 <i  class="dashboardbanner fas fa-users"></i>
                               </div>
@@ -37,7 +37,7 @@
                               <div class="card-body">
                                 <h5 class="hf text-light">Colleges</h5>
                                 <h6 class="af text-light" style="font-size:14px;" >
-                               <span class="badge bg-light text-dark" style="font-size:17px">145</span>  Accounts
+                               <span class="badge bg-light text-dark" style="font-size:17px">{{count($college)}}</span>  in Records
                                 </h6>
                                 <i  class="dashboardbanner fas fa-graduation-cap"></i>
                               </div>
@@ -57,31 +57,24 @@
                                 <div class="overflow event_contents" >
 
                                 
-                                <ol class="list-group list-group-numbered">
-                                  @for ($i = 0; $i < 3; $i++)
+                                <ol class="list-group ">
+                                  @foreach ($sport as $event)
                                   <li class="list-group-item d-flex justify-content-between align-items-start">
 
                                     <div class="ms-2 me-auto">
-                                      <div class="fw-bold">Subheading</div>
-                                      Content for list item
+                                      <span style="font-size:11px" class="hf">
+                                      @foreach ($college as $item)
+                                          @if($item->id == $event->CollegeId)
+                                        {{$item->name}}
+                                          @endif
+                                      @endforeach
+                                      </span>
+                                      <div  class="fw-bold text-danger">{{$event->name}}</div>
+                                     <span style="font-size:12px">{{$event->description}}</span>
                                     </div>
-                                    <span class="badge bg-primary rounded-pill">14</span>
-                                  </li>
-                                  <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <div class="ms-2 me-auto">
-                                      <div class="fw-bold">Subheading</div>
-                                      Content for list item
-                                    </div>
-                                    <span class="badge bg-primary rounded-pill">14</span>
-                                  </li>
-                                  <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <div class="ms-2 me-auto">
-                                      <div class="fw-bold">Subheading</div>
-                                      Content for list item
-                                    </div>
-                                    <span class="badge bg-primary rounded-pill">14</span>
-                                  </li>
-                                  @endfor
+                                   {{--  <span class="badge bg-primary rounded-pill">14</span> --}}
+                                  </li> 
+                                  @endforeach
                                
                                 </ol>
                               </div>
@@ -95,46 +88,93 @@
                               <div class="card-body">
                             
                                
-<script>
-window.onload = function () {
+                                <script>
+                                  window.onload = function () {
+                                  
+                                  var chart = new CanvasJS.Chart("chartContainer", {
+                                    exportEnabled: true,
+                                    animationEnabled: true,
+                                    title:{
+                                      text: "All sportsevent and its participants"
+                                    },
+                                 /*    subtitles: [{
+                                      text: "Click Legend to Hide or Unhide Data Series"
+                                    }], */ 
+                                    axisX: {
+                                      title: "Sport/Events"
+                                    },
+                                    axisY: {
+                                      title: "Participants",
+                                      titleFontColor: "#4F81BC",
+                                      lineColor: "#4F81BC",
+                                      labelFontColor: "#4F81BC",
+                                      tickColor: "#4F81BC",
+                                      includeZero: true
+                                    },
+                                   /*  axisY2: {
+                                      title: "Clutch - Units",
+                                      titleFontColor: "#C0504E",
+                                      lineColor: "#C0504E",
+                                      labelFontColor: "#C0504E",
+                                      tickColor: "#C0504E",
+                                      includeZero: true
+                                    } ,*/
+                                    toolTip: {
+                                      shared: true
+                                    },
+                                   /*  legend: {
+                                      cursor: "pointer",
+                                      itemclick: toggleDataSeries
+                                    }, */
+                                    data: [{
+                                      type: "column",
+                                      name: "",
+                                      showInLegend: true,      
+                                      yValueFormatString: "#,##0.# Participants",
+                                      dataPoints: [
+                                     
+                                     @foreach($graph as $row)
+                                   
 
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	exportEnabled: true,
-	theme: "light1", // "light1", "light2", "dark1", "dark2"
-	title:{
-		text: "All Sports and its Participants"
-	},
-  	axisY: {
-      includeZero: true
-    },
-	data: [{
-		type: "column", //change type to bar, line, area, pie, etc
-		//indexLabel: "{y}", //Shows y value on all Data Points
-		indexLabelFontColor: "#5A5757",
-      	indexLabelFontSize: 16,
-		indexLabelPlacement: "outside",
-		dataPoints: [
-			{ x: 10, y: 71 },
-			{ x: 20, y: 55 },
-			{ x: 30, y: 50 },
-			{ x: 40, y: 65 },
-			{ x: 50, y: 92, indexLabel: "\u2605 Highest" },
-			{ x: 60, y: 68 },
-			{ x: 70, y: 38 },
-			{ x: 80, y: 71 },
-			{ x: 90, y: 54 },
-			{ x: 100, y: 60 },
-			{ x: 110, y: 36 },
-			{ x: 120, y: 49 },
-			{ x: 130, y: 21, indexLabel: "\u2691 Lowest" }
-		]
-	}]
-});
-chart.render();
+                                      { label: "{{$row->name}}",  y: {{$row->totalcount}} },
+                                    
+                                     @endforeach
 
-}
-</script>
+                                       /*  { label: "New Jersey",  y: 19034.5 },
+                                        { label: "Texas", y: 20015 },
+                                        { label: "Oregon", y: 25342 },
+                                        { label: "Montana",  y: 20088 },
+                                        { label: "Massachusetts",  y: 28234 } */
+                                      ]
+                                    }/* ,
+                                    {
+                                      type: "column",
+                                      name: "Clutch",
+                                      axisYType: "secondary",
+                                      showInLegend: true,
+                                      yValueFormatString: "#,##0.# Units",
+                                      dataPoints: [
+                                        { label: "New Jersey", y: 210.5 },
+                                        { label: "Texas", y: 135 },
+                                        { label: "Oregon", y: 425 },
+                                        { label: "Montana", y: 130 },
+                                        { label: "Massachusetts", y: 528 }
+                                      ]
+                                    } */]
+                                  });
+                                  chart.render();
+                                  
+                                  function toggleDataSeries(e) {
+                                    if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                      e.dataSeries.visible = false;
+                                    } else {
+                                      e.dataSeries.visible = true;
+                                    }
+                                    e.chart.render();
+                                  }
+                                  
+                                  }
+                                  </script>
 
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -153,7 +193,11 @@ chart.render();
 
 
                       </div>
+                   
                   
+                  
+                     
+                     
                       <div class="col-md-3">
                        
                      
@@ -168,13 +212,12 @@ chart.render();
                        
                         <div class="card shadow mt-5 bg-dark">
                           <div class="card-body">
-                            <h6 class="hf text-primary">Scores</h6>
+                            <h6 class="hf text-primary">Colleges with Events</h6>
                             <ul class="list-group list-group-flush">
-                              <li class="list-group-item">An item</li>
-                              <li class="list-group-item">A second item</li>
-                              <li class="list-group-item">A third item</li>
-                              <li class="list-group-item">A fourth item</li>
-                              <li class="list-group-item">And a fifth one</li>
+                              @foreach ($collegewevent as $item)
+                              <li class="list-group-item hf" style="font-size:13px">{{$item->name}}</li>
+                              @endforeach
+                           
                             </ul>
   
 

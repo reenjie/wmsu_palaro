@@ -42,9 +42,11 @@
                                                 <td>{{$row->email}}</td>
                                                 <td>{{$row->contactno}}</td>
                                                 <td>
+                                                
                                                   @foreach ($college as $col )
                                                   @if($col->id == $row->CollegeId)
                                                    {{$col->name}}
+                                                
                                                   @endif
                                                @endforeach
                                                 </td>

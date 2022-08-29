@@ -20,9 +20,12 @@ return new class extends Migration
             $table->string('address');
             $table->string('user_type');
             $table ->integer('CollegeId');
+            $table->text('sports_id');
             $table->string('contactno');
             $table->string('password');
+            $table->integer('fl');
             $table->datetime('date_register');
+            $table->text('image')->nullable();
         });
     }
 

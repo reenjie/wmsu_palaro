@@ -37,6 +37,15 @@ class HomeController extends Controller
                     return redirect('/Coordinator/Dashboard');
               break;
 
+            case 'student':
+                return redirect('/MyAccount/Dashboard');
+          break;
+
+          case 'ecoordinator':
+            return redirect('/Event/Dashboard');
+      break;
+
+
         }
     }
 
