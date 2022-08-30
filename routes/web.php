@@ -334,6 +334,7 @@ Route::controller(App\Http\Controllers\MailController::class)->group(function(){
       
         Route::post('resetlink','resetlink')->name('resetlink');
         Route::post('resetpassword','resetpassword')->name('resetpassword');
+        Route::get('sendcredentials','sendcredentials')->name('sendCredentials');
     });
 
 

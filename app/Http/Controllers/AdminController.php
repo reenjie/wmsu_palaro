@@ -238,7 +238,12 @@ public function deletecollage($id){
         'sports_id'=>$request->input('sportsid'),
     ]); 
     
-    return redirect(route('admin.ecoordinators'))->with('Success','Account Added Successfully!');
+    $usertype='ecoordinator';
+    
+    return redirect()->route('mail.sendCredentials',['email'=>$request->input('email'),'name'=>$request->input('name'),'usertype'=>$usertype]);
+
+
+    
     
     
     
@@ -324,14 +329,9 @@ public function add_new_coordinator(Request $request){
     'sports_id'=>0,
 ]); 
 
-if($usertype =='student'){
-    return redirect(route('admin.students'))->with('Success','Account Added Successfully!');
+return redirect()->route('mail.sendCredentials',['email'=>$request->input('email'),'name'=>$request->input('name'),'usertype'=>$usertype]);
 
-}else if($usertype =='coordinator'){
 
-    return redirect(route('admin.coordinators'))->with('Success','Account Added Successfully!');
-
-}
 
 
 
