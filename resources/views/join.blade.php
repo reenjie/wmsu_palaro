@@ -1,10 +1,11 @@
 @extends('layouts.home')
 @section('carousel')
+@php $join=''; @endphp
     <div class="container">
 
         <div class="row">
             <div class="col-md-6">
-                     <h4 class="hf mt-5">Join Game</h4>   
+                     <h5 class="hf mt-5 text-light">Join Game</h5>   
            <div class="card shadow mt-4  bg-dark">
             <div class="card-body">
                         <div class="container ">
@@ -61,9 +62,9 @@
             </div>
 
             <div class="col-md-6">
-            <h4 class="hf mt-5">Validating Participants</h4>     
+            <h5 class="hf mt-5 text-light">Validating Participants</h5>     
             <hr>
-            <h6 class="hf">Please Enter your Email Address for validation:</h6>
+            <h6 class="hf text-light">Please Enter your Email Address for validation:</h6>
             <input id="email" type="email" class="validatetxt" autofocus autocomplete="none">
             <button id="validate" class="btn btn-dark px-4 hf mt-3">Validate</button>
 
@@ -86,23 +87,23 @@
                         if(IsEmail(val)== true){
                                     $('#email').removeClass('invalid');    
 
-$('.result').html('<span style="font-weight:bolder;font-size:20px" class="text-secondary hf">Verifying ...</span>');
+$('.result').html('<span style="font-weight:bolder;font-size:15px" class="text-light hf">Verifying ...</span>');
 $.ajax({
 url: '{{route("validate")}}',
 method: 'get',
 data : {val:val,id:id},
 success : function(data){
 if(data == 'join'){
-$('.result').html('<span style="font-weight:bolder;font-size:25px" class="text-success hf">Account Verified!<br> Please <a href="{{route("login")}}">Login</a> and Join the Game!</span>');
+$('.result').html('<span style="font-weight:bolder;font-size:15px" class="text-success hf">Account Verified!<br> Please <a href="{{route("login")}}">Login</a> and Join the Game!</span>');
 }else if (data == 'cantjoin') {
-            $('.result').html('<span style="font-weight:bolder;font-size:25px" class="text-danger hf">Sorry! You cannot join this game. </span>');
+            $('.result').html('<span style="font-weight:bolder;font-size:15px" class="text-light hf">Sorry! You cannot join this game. </span>');
 }else {
 $('.result').html('<span style="font-weight:bolder;font-size:25px" class="text-danger hf">We are unable find your account. Please Make sure you have entered the correct Email. Or <a href="{{route("register")}}">Register</a> when you dont have an account. </span>');
 }
 } 
 })
                         }else {
-        $('.result').html('<span style="font-weight:bolder;font-size:25px" class="text-danger hf">Please Enter a Valid Email</span>');
+        $('.result').html('<span style="font-weight:bolder;font-size:15px" class="text-light hf">Please Enter a Valid Email</span>');
                         }
                  
                 }        

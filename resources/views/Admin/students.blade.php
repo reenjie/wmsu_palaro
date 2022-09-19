@@ -19,7 +19,7 @@
               </div>
           @endif
                         <div class="container">
-                                    <button class="btn btn-dark mb-3 px-4 btn-sm"  onclick="window.location.href='{{route('admin.add_student_route','student')}}' ">Add</button>
+                                 {{--    <button class="btn btn-dark mb-3 px-4 btn-sm"  onclick="window.location.href='{{route('admin.add_student_route','student')}}' ">Add</button> --}}
                                     <div class="table-responsive">
                                    
                                     <table class="table af" id="myTable">

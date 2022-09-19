@@ -41,6 +41,7 @@ Route::get('/', function () {
     $college= College::all();
     $sport = Sportevent::all();
     $coordinator = User::where('user_type','coordinator')->get();
+    $ecoordinator = User::where('user_type','ecoordinator')->get();
     try {
         $collegeid = Auth::user()->CollegeId;
         $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
@@ -50,7 +51,7 @@ Route::get('/', function () {
         //throw $th;
     }
    
-    return view('homepage',compact('carousel','videos','count','announcement','college','sport','coordinator'));
+    return view('homepage',compact('carousel','videos','count','announcement','college','sport','coordinator','ecoordinator'));
 });
 
 Route::get('Join',function(Request $request){
@@ -95,9 +96,14 @@ Route::get('validate',[App\Http\Controllers\ajax::class, 'validate_email'])->nam
 Route::get('changevideo',[App\Http\Controllers\ajax::class, 'change_video'])->name('changevideo');
 
 Route::get('allevents',function(){
-    $college = DB::select('select * from colleges where id in (select CollegeId from sportevents)');
-    $sport = Sportevent::all();
-    return view('Allevent',compact('sport','college'));
+   
+    $sport = DB::select("select * from sportevents where id in (select sports_id from games)"); /// To do ..
+    $game = Game::all();
+    $tally = Tally::all();
+    $team = Team::all();
+    $user = User::all();
+  
+return view('Allevent',compact('sport','game','tally','team','user'));
 })->name('allevents');
 
 Auth::routes();
@@ -251,7 +257,7 @@ Route::controller(App\Http\Controllers\UserController::class)->group(function(){
         Route::get('update-account/{id}/{name}','updatecoordinator');
         Route::post('update_coordinator','update_coordinator')->name('update_coordinator');
         Route::get('Dashboard','dashboard')->name('dashboard');
-        Route::get('Join-Event','join')->name('join');
+        Route::get('Join-   ','join')->name('join');
         Route::get('About','about')->name('about');
         Route::get('Join/Events/{id}/Event={name}','join_event')->name('join_event');
 

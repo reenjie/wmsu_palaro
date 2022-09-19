@@ -75,8 +75,19 @@
                             <input type="number" name="numofparticipants" class="form-control mb-2  " style="font-size: 13px" value="{{$row->nop}}" min="3">           
                 </div>      
                 <div class="col-md-6">
-                            <h6 class="af ">Number of Rounds:</h6>
-                            <input type="number" class="form-control mb-2 " style="font-size: 13px" name="numofrounds" value="{{$row->nor}}">            
+                            
+                            
+                            <h6 class="af ">Type of Round:</h6>
+                               
+                            <select name="numofrounds" style="font-size: 13px" id="" class="form-select">
+                                   <option value="{{$row->nor}}">{{$row->nor}}</option>
+                                   <option value="Innings">Innings</option>
+                                   <option value="Quarters">Quarters</option>
+                                   <option value="Sets">Sets</option>
+                                   <option value="Rounds">Rounds</option>
+                                   <option value="Halves">Halves</option>
+                            </select>
+                            
                 </div>  
 
                 <h6 class="hf ">TIME per Day</h6>

@@ -23,7 +23,7 @@
                                     <div class="col-md-6">
                                         <select name="team" id="" required class="form-select mb-2">
                                             <option value="">Select Team</option>
-                                            <option value="0">INDEPENDENT (Zero Team)</option>
+                                         {{--    <option value="0">INDEPENDENT (Zero Team)</option> --}}
                           @foreach ($allteam as $item)
                 <option value="{{$item->id}}">{{$item->name}}</option> 
                                             @endforeach

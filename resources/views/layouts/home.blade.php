@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
-<body class="antialiased">
+<body id="body">
     <div id="wrapper"></div>
     <button id="btnup" class="d-none "><i class="fas fa-caret-up"></i></button>
     <nav class="nav1 shadow">
@@ -139,9 +139,14 @@
 
     <br>
     <br>
+    @isset($join)
+
+    @else 
     <footer>
         <h6>CopyRights &middot; 2022 | WMSU-PALARO</h6>
     </footer>
+    @endisset
+  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function() {

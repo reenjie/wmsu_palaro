@@ -26,7 +26,7 @@ return new class extends Migration
             $table->text('requirements')->nullable();
             $table->text('file')->nullable();
             $table->integer('nop');
-            $table->integer('nor');
+            $table->text('nor');
             $table->integer('CollegeId');
             $table->text('istype')->nullable();
             $table->datetime('date_added');
