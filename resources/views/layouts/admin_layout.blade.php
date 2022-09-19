@@ -38,7 +38,7 @@
 
 </head>
 
-<body>
+<body style="">
 
     <div id="app">
         <nav class="sidenav shadow" id="navitems">

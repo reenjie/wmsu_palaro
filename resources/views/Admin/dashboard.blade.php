@@ -209,7 +209,7 @@
             <script type="text/javascript" src="//w.24timezones.com/l.js" async></script>
 
 
-                       
+                       {{-- 
                         <div class="card shadow mt-5 bg-dark">
                           <div class="card-body">
                             <h6 class="hf text-primary">Colleges with Events</h6>
@@ -222,7 +222,7 @@
   
 
                           </div>
-                        </div>
+                        </div> --}}
                         
                       </div>
                     </div>

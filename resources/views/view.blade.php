@@ -14,7 +14,9 @@
                 }
                 
             @endphp
+           
             <div class="container p-3" >
+                <h4 class="text-light title" style="font-size: 16px;text-align:right">WMSU PALARO {{date('Y')}}</h4>
                 <span style="font-size: 13px" class="text-danger hf">
                     @foreach ($college as $col)
                         @if ($col->id == $events->CollegeId)
@@ -22,17 +24,17 @@
                         @endif
                     @endforeach
                 </span>
-                <h1 class="text-danger hf" style="font-weight: bold">{{ $events->name }}
+                <h4 class="text-danger hf" style="font-weight: bold">{{ $events->name }}
                     <span style="font-size:15px" class="text-secondary">( {{$events->istype}} )</span>
 
-                </h1>
+                </h4>
             </div>
           
-            <div class="row mt-5">
-                <div class="col-md-5">
+            <div class="row ">
+                <div class="col-md-4">
                    
                     <h6 style="text-align: center">
-                        <img src="{{ $src }}" alt="" style="width: 400px;height:400px;cursor:pointer" class="img-thumbnail rounded-circle shadow" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <img src="{{ $src }}" alt="" style="width: 250px;height:250px;cursor:pointer" class="img-thumbnail rounded-circle shadow" data-bs-toggle="modal" data-bs-target="#exampleModal">
       
           
           <!-- Modal -->
@@ -59,8 +61,8 @@
 
 
                 </div>
-                <div class="col-md-7">
-                       
+                <div class="col-md-8">
+                   
                     @if (count($video) >= 1)
                         @foreach ($video as $vid)
                             @if ($vid->videotype == 'youtube')
@@ -75,10 +77,14 @@
                     @else
                         
                         <h6 style="text-align: center" class="mt-5">
-                            <img src="https://th.bing.com/th/id/OIP.y-HrFRfyRRQfvPq4opGxgwHaFm?pid=ImgDet&rs=1"
-                                alt="">
-                            <br>
-                            No Video stream yet..
+                            <div class="d-flex justify-content-center text-light">
+                                <div class="spinner-border" style="padding:50px" role="status">
+                                  <span class="visually-hidden"></span>
+                                </div>
+                             
+                              </div>
+                              <br>
+                              <h6 style="text-align: center" class="text-light">Unable to Locate Video..</h6>
                         </h6>
                     @endif
 
@@ -130,12 +136,12 @@
             </div>
             @if(count($team)>=1)
             <div class="row mt-4">
-                <h3 class="hf text-light">TEAMs</h3>
+                <h5 class="hf text-light">TEAMs</h5>
               <br>
               <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     @foreach ($team as $item)
-                    <li class="breadcrumb-item active" aria-current="page"><span class="text-info hf" style="font-weight: bolder;font-size:25px">{{$item->name}}</span></li>
+                    <li class="breadcrumb-item active" aria-current="page"><span class="text-info hf" style="font-weight: bolder;font-size:16px">{{$item->name}}</span></li>
                     @endforeach   
                  
                 </ol>
@@ -160,7 +166,7 @@
             window.onload = function() {
 
                 var chart = new CanvasJS.Chart("chartContainer", {
-                    theme: "light2", // "light1", "light2", "dark1", "dark2"
+                    theme: "dark1", // "light1", "light2", "dark1", "dark2"
                     exportEnabled: true,
                     animationEnabled: true,
                     title: {
@@ -186,10 +192,7 @@
                                 y: {{count($game)}},
                                 label: "Game Match"
                             },
-                            {
-                                y: {{count($independents)}},
-                                label: "Independent Player"
-                            }
+                          
                            
                         ]
                     }]
@@ -200,7 +203,7 @@
         </script>
         <div class="row">
             <div class="col-md-8">
-                <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                <div id="chartContainer" style="height: 300px; width: 100%;background-color:transparent"></div>
                 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                 <br>
                 <table class="table">
@@ -217,14 +220,14 @@
                         <tr>
                             <td scope="row" class="text-danger hf" style="font-size: 15px">{{$row->name}}</td>
                             <td>
-                                <ul class="list-group">
+                                <ul class="list-group" >
                                     @foreach ($participant as $item)
                                     @if($item->team == $row->id)
                                   
                                     @foreach ($alluser as $pp)
                                    
                                     @if($pp->id == $item->user_id )
-                                    <li class="list-group-item">
+                                    <li class="">
                                     <span class="text-primary hf" style="font-weight: bold;font-size:13px">{{$pp->name}}
                                     <br>
                                     <span style="font-size: 13px" class="text-secondary af">{{$pp->email}}</span>
@@ -253,17 +256,17 @@
 
             </div>
             <div class="col-md-4">
-                <div class="card shadow mt-3">
-                    <div class="card-header">
-                        <h6 class="text-primary">Match & Score Board</h6>
+                <div class="  mt-3">
+                    <div class="">
+                        <h6 class="text-light">Match & Score Board</h6>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
 
                                 @foreach ($game as $row)
-                                <li class="list-group-item">
-                                    <h6 class="hf text-secondary" style="font-weight: bold">{{$row->name}}</h6>
+                                <li class="">
+                                    <h6 class="hf text-light" style="font-weight: bold">{{$row->name}}</h6>
 
-                                    <span style="font-size:12px" class="text-secondary">Match</span>
+                                    <span style="font-size:12px" class="text-light">Match</span>
                                     <br>
                                     <h6 class="hf text-danger" style="text-align: center"> Vs</h6>
                                     <div class="row">
@@ -280,7 +283,7 @@
                                         
                                                 <div class="col-md-6">
                                                
-                                                    <span class="hf">{{$group->name}}</span>    
+                                                    <span class="hf text-light">{{$group->name}}</span>    
                                                     <br>
                                                     <span class="text-primary" style="font-size:13px">
                                                     @if($mytally->isofficial == 0)
@@ -290,8 +293,8 @@
                                                     @endif
                                                     </span>
                                                     <br>
-                                                    <span class="text-secondary" style="font-size: 12px">
-                                                        Score: <span class="text-danger">{{$mytally->tally}}</span>
+                                                    <span class="text-light" style="font-size: 12px">
+                                                        Score: <span class="text-light">{{$mytally->tally}}</span>
                                                     </span>
                                                    
                                                 </div>
@@ -305,7 +308,7 @@
 
                                             
                                               
-                                        @foreach ($user as $key => $independent)
+                                      @foreach ($user as $key => $independent)
                                         @if($mytally->user_id == $independent->id)
                                                
                                           @for ($i = 0; $i < 3; $i++)
@@ -313,7 +316,7 @@
                                                   @if($key == 0)
                                               <div class="col-md-5">
                                              
-                                                  <span class="hf">{{$independent->name}}</span>    
+                                                  <span class="hf text-light">{{$independent->name}}</span>    
                                                   <br>
                                                   <span class="text-primary" style="font-size:13px">@if($mytally->isofficial == 0)
                                                     Unofficial
@@ -321,8 +324,8 @@
                                                     OFFICIAL
                                                     @endif</span>
                                                   <br>
-                                                  <span class="text-secondary" style="font-size: 12px">
-                                                      Score: <span class="text-danger">{{$mytally->tally}}</span>
+                                                  <span class="text-light" style="font-size: 12px">
+                                                      Score: <span class="text-light">{{$mytally->tally}}</span>
                                                   </span>
                                                  
                                               </div>
@@ -346,8 +349,8 @@
                                                     OFFICIAL
                                                     @endif</span>
                                                   <br>
-                                                  <span class="text-secondary" style="font-size: 12px">
-                                                      Score: <span class="text-danger">{{$mytally->tally}}</span>
+                                                  <span class="text-light" style="font-size: 12px">
+                                                      Score: <span class="text-light">{{$mytally->tally}}</span>
                                                   </span>
                                                  
                                               </div>
@@ -355,12 +358,13 @@
 
                                               @endif
                                           @endfor
-                                      
+                                       
                                         
                                        
 
                                        @endif
                                       @endforeach
+                                    
                                         
 
 
@@ -436,20 +440,20 @@
     @if (count($announcement) >= 1)
     <div class="container mt-5 ">
         <div class="mt-5">
-            <div class="card-header bg-dark">
-                <h5 class="hf text-danger" style="font-weight: bolder">Announcements</h5>
+            <div class="card-header">
+                <h6 class="hf text-danger" style="font-weight: bolder">Announcements</h6>
             </div>
     
             <div class="card-body">
                 <div class="row">
                      
                     <div class="col-md-10">
-                        <div class="list-group">
+                        <div class="">
                           
                                 @foreach ($announcement as $ann)
-                                    <a href="javascript:void(0)" class="list-group-item list-group-item-action mb-2"
-                                        aria-current="true" style="cursor: default">
-                                        <i class="fas fa-bell text-danger"></i>
+                                    <a href="javascript:void(0)" class=" mb-2"
+                                        aria-current="true" style="cursor: default;text-decoration:none;">
+                                        <i class="fas fa-bell text-danger text-light"></i>
 
                                         <div class="d-flex w-100 justify-content-between">
                                             {{-- <h5 class="fs text-danger" style="font-size: 12px">
@@ -467,14 +471,14 @@
                                                                 </h5> --}}
 
                                             <small style="font-size:11px;float:right">
-                                                <span style="color: #891f2f"><time class="timeago"
+                                                <span style="color: #e9d5d8"><time class="timeago"
                                                         datetime="{{ $ann->date_added }}"
                                                         title="{{ $ann->date_added }}"></time></span>
                                             </small>
                                         </div>
 
 
-                                        <p class="mb-1 fs text-secondary" style="font-size:13px">{{ $ann->announcement }}
+                                        <p class="mb-1 fs text-light" style="font-size:13px">{{ $ann->announcement }}
                                         </p>
 
                                         <small style="font-size: 11px"></small>
@@ -505,7 +509,7 @@
 
 
     <div class="container mt-5">
-        <h4 class="hf">Event Coordinator</h4>
+        <h6 class="hf text-light">Event Coordinator</h6>
         <hr>
 
         <h6 class="hf text-danger" style="font-weight: bold">

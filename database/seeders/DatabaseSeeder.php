@@ -37,21 +37,21 @@ class DatabaseSeeder extends Seeder
              ]);
 
         Carousel::create([
-            'images'=>'samp.jpg',
+            'images'=>'1663158093.jpg',
             'priority'=>1,
             'sports_id'=>null,
             'isactive'=>null,
             'date_added'=>now(),
         ]);
         Carousel::create([
-            'images'=>'samp2.jpg',
+            'images'=>'1663158130.jpg',
             'priority'=>1,
             'sports_id'=>null,
             'isactive'=>null,
             'date_added'=>now(),
         ]);
         Carousel::create([
-            'images'=>'samp3.jpg',
+            'images'=>'1663158141.jpg',
             'priority'=>1,
             'sports_id'=>null,
             'isactive'=>null,
