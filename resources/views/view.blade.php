@@ -30,12 +30,14 @@
                 </h4>
             </div>
           
-            <div class="row ">
+            <div class="container">
+                <div class="row">
                 <div class="col-md-4">
                    
                     <h6 style="text-align: center">
-                        <img src="{{ $src }}" alt="" style="width: 250px;height:250px;cursor:pointer" class="img-thumbnail rounded-circle shadow" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      
+                        <img src="{{ $src }}" alt="" style="width: 250px;height:250px;" class="img-thumbnail rounded-circle shadow">
+                        <br>
+                        <button class="btn btn-dark"  data-bs-toggle="modal" data-bs-target="#exampleModal" style="font-size: 14px">Description</button>
           
           <!-- Modal -->
           <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -47,7 +49,48 @@
                         <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-10">
-                                                <img src="{{ $src }}" alt="" style="width:100%; height:100%" class="img-thumbnail shadow" >
+                                             {{--    <img src="{{ $src }}" alt="" style="width:100%; height:100%" class="img-thumbnail shadow" > --}}
+                                             <div class="row mt-5" >
+
+                                                <div class="col-md-4">
+                                                    <h6 class="text-secondary hf mt-5" style="font-weight: bold">
+                                                        Description
+                                
+                                                        <hr>
+                                                        <span style="font-size:14px;font-weight:normal"
+                                                            class="hf text-secondary">{{ $events->description }}</span>
+                                
+                                                    </h6>
+                                                </div>
+                                                <div class="col-md-4 ">
+                                                    <h6 class="text-secondary hf mt-5" style="font-weight: bold">
+                                
+                                                        Rules & Regulations
+                                                        <hr>
+                                                        <span style="font-size:14px;font-weight:normal"
+                                                            class="hf text-secondary">{{ $events->rules_regulation }}</span>
+                                
+                                                    </h6>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <h6 class="text-secondary hf mt-5" style="font-weight: bold">
+                                
+                                                        Requirements
+                                                        <hr>
+                                                        <span style="font-size:14px;font-weight:normal"
+                                                            class="hf text-danger">{{ $events->requirements }}</span>
+                                
+                                
+                                                        <br><br>
+                                                        No. of Participants allowed
+                                                        <br>
+                                                        <span style="font-size:14px" class="hf text-danger">{{ $events->nop }}</span>
+                                                        <input type="hidden" id="eventid" value="{{ $events->id }}">
+                                                    </h6>
+                                                </div>
+                                
+                                
+                                            </div>
                                     </div>
                                     <div class="col-md-1"></div>
                         </div>
@@ -63,77 +106,68 @@
                 </div>
                 <div class="col-md-8">
                    
-                    @if (count($video) >= 1)
-                        @foreach ($video as $vid)
-                            @if ($vid->videotype == 'youtube')
-                                <iframe id="ycvideo" width="400" height="315" src="{{ $vid->video }}"
-                                    frameborder="0" allowfullscreen></iframe>
-                            @elseif($vid->videotype == 'facebook')
-                                <div class="" id="facebookvideo">
-                                    {!! $vid->video !!}
-                                </div>
-                            @endif
-                        @endforeach
-                    @else
-                        
-                        <h6 style="text-align: center" class="mt-5">
-                            <div class="d-flex justify-content-center text-light">
-                                <div class="spinner-border" style="padding:50px" role="status">
-                                  <span class="visually-hidden"></span>
-                                </div>
-                             
-                              </div>
-                              <br>
-                              <h6 style="text-align: center" class="text-light">Unable to Locate Video..</h6>
-                        </h6>
-                    @endif
+         
+
+
+ @if(count($carousel)>=1)
+ <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+     <div class="carousel-indicators">
+         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+             aria-current="true" aria-label="Slide 1"></button>
+         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+             aria-label="Slide 2"></button>
+         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+             aria-label="Slide 3"></button>
+     </div>
+     <div class="carousel-inner">
+         
+         @foreach ($carousel as $row )
+        @if($row->isactive == 1)
+         <div class="carousel-item active ">
+           <img src="{{asset('assets/img').'/'.$row->images}}"  style="height: 400px"
+           class="d-block w-100" alt="...">
+         </div>
+         @else
+         <div class="carousel-item">
+             <img src="{{asset('assets/img').'/'.$row->images}}"  style="height: 400px"
+             class="d-block w-100" alt="...">
+           </div>
+         @endif
+
+         @endforeach
+        
+       
+
+     </div>
+     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+         data-bs-slide="prev">
+         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+         <span class="visually-hidden">Previous</span>
+     </button>
+     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+         data-bs-slide="next">
+         <span class="carousel-control-next-icon" aria-hidden="true"></span>
+         <span class="visually-hidden">Next</span>
+     </button>
+ </div> 
+@else
+<div>
+    <div  style="text-align: center;color:white">
+      
+        <img src="{{asset('assets/img/wmsu.jpg')}}" style="width:300px" alt="" class="rounded-circle">
+        <br>
+        Image Unavailable.
+      </div>
+</div>
+
+ @endif
 
 
 
                 </div>
             </div>
 
-            <div class="row">
-
-                <div class="col-md-4">
-                    <h6 class="text-secondary hf mt-5" style="font-weight: bold">
-                        Description
-
-                        <hr>
-                        <span style="font-size:14px;font-weight:normal"
-                            class="hf text-secondary">{{ $events->description }}</span>
-
-                    </h6>
-                </div>
-                <div class="col-md-4 ">
-                    <h6 class="text-secondary hf mt-5" style="font-weight: bold">
-
-                        Rules & Regulations
-                        <hr>
-                        <span style="font-size:14px;font-weight:normal"
-                            class="hf text-secondary">{{ $events->rules_regulation }}</span>
-
-                    </h6>
-                </div>
-                <div class="col-md-4">
-                    <h6 class="text-secondary hf mt-5" style="font-weight: bold">
-
-                        Requirements
-                        <hr>
-                        <span style="font-size:14px;font-weight:normal"
-                            class="hf text-danger">{{ $events->requirements }}</span>
-
-
-                        <br><br>
-                        No. of Participants allowed
-                        <br>
-                        <span style="font-size:14px" class="hf text-danger">{{ $events->nop }}</span>
-                        <input type="hidden" id="eventid" value="{{ $events->id }}">
-                    </h6>
-                </div>
-
-
-            </div>
+          
             @if(count($team)>=1)
             <div class="row mt-4">
                 <h5 class="hf text-light">TEAMs</h5>
@@ -156,7 +190,7 @@
         <hr>
 
 
-
+    </div>
 
     </div>
 
@@ -203,7 +237,31 @@
         </script>
         <div class="row">
             <div class="col-md-8">
-                <div id="chartContainer" style="height: 300px; width: 100%;background-color:transparent"></div>
+           {{--      <div id="chartContainer" style="height: 300px; width: 100%;background-color:transparent"></div> --}}
+
+               @if (count($video) >= 1)
+                        @foreach ($video as $vid)
+                            @if ($vid->videotype == 'youtube')
+                                <iframe id="ycvideo" width="400" height="315" src="{{ $vid->video }}"
+                                    frameborder="0" allowfullscreen></iframe>
+                            @elseif($vid->videotype == 'facebook')
+                                <div class="" id="facebookvideo">
+                                    {!! $vid->video !!}
+                                </div>
+                            @endif
+                        @endforeach
+                    @else
+                    <div>
+                        <div style="text-align: center">
+                          
+                            <img src="{{asset('assets/img/wmsu.jpg')}}" style="width:300px" alt="" class="rounded-circle">
+                            <br>
+                            Video Unavailable.
+                          </div>
+                    </div>
+                    
+                    @endif
+
                 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                 <br>
                 <table class="table">
@@ -229,8 +287,18 @@
                                     @if($pp->id == $item->user_id )
                                     <li class="">
                                     <span class="text-primary hf" style="font-weight: bold;font-size:13px">{{$pp->name}}
+                                   
                                     <br>
                                     <span style="font-size: 13px" class="text-secondary af">{{$pp->email}}</span>
+                                    <br>
+                                    <span class="badge text-bg-success bg-danger">  @foreach ($college as $cl)
+
+                                        @if($cl->id == $pp->CollegeId)
+                                        {{$cl->name}}
+                                        @endif
+                                        
+                                    @endforeach</span>
+                                      
                                     </span>    
                                     </li>  
 
@@ -258,15 +326,15 @@
             <div class="col-md-4">
                 <div class="  mt-3">
                     <div class="">
-                        <h6 class="text-light">Match & Score Board</h6>
+                        <h6 class="text-dark">Match & Score Board</h6>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
 
                                 @foreach ($game as $row)
                                 <li class="">
-                                    <h6 class="hf text-light" style="font-weight: bold">{{$row->name}}</h6>
+                                    <h6 class="hf text-dark" style="font-weight: bold">{{$row->name}}</h6>
 
-                                    <span style="font-size:12px" class="text-light">Match</span>
+                                    <span style="font-size:12px" class="text-dark">Match</span>
                                     <br>
                                     <h6 class="hf text-danger" style="text-align: center"> Vs</h6>
                                     <div class="row">
@@ -283,7 +351,7 @@
                                         
                                                 <div class="col-md-6">
                                                
-                                                    <span class="hf text-light">{{$group->name}}</span>    
+                                                    <span class="hf text-dark">{{$group->name}}</span>    
                                                     <br>
                                                     <span class="text-primary" style="font-size:13px">
                                                     @if($mytally->isofficial == 0)
@@ -293,8 +361,8 @@
                                                     @endif
                                                     </span>
                                                     <br>
-                                                    <span class="text-light" style="font-size: 12px">
-                                                        Score: <span class="text-light">{{$mytally->tally}}</span>
+                                                    <span class="text-dark" style="font-size: 12px">
+                                                        Score: <span class="text-dark">{{$mytally->tally}}</span>
                                                     </span>
                                                    
                                                 </div>
@@ -316,7 +384,7 @@
                                                   @if($key == 0)
                                               <div class="col-md-5">
                                              
-                                                  <span class="hf text-light">{{$independent->name}}</span>    
+                                                  <span class="hf text-dark">{{$independent->name}}</span>    
                                                   <br>
                                                   <span class="text-primary" style="font-size:13px">@if($mytally->isofficial == 0)
                                                     Unofficial
@@ -324,8 +392,8 @@
                                                     OFFICIAL
                                                     @endif</span>
                                                   <br>
-                                                  <span class="text-light" style="font-size: 12px">
-                                                      Score: <span class="text-light">{{$mytally->tally}}</span>
+                                                  <span class="text-dark" style="font-size: 12px">
+                                                      Score: <span class="text-dark">{{$mytally->tally}}</span>
                                                   </span>
                                                  
                                               </div>
@@ -349,8 +417,8 @@
                                                     OFFICIAL
                                                     @endif</span>
                                                   <br>
-                                                  <span class="text-light" style="font-size: 12px">
-                                                      Score: <span class="text-light">{{$mytally->tally}}</span>
+                                                  <span class="text-dark" style="font-size: 12px">
+                                                      Score: <span class="text-dark">{{$mytally->tally}}</span>
                                                   </span>
                                                  
                                               </div>
@@ -391,53 +459,10 @@
         $('#1').addClass('d-none');
         $('#k1').addClass('d-none');
     </script>
-    @if(count($carousel)>=1)
-    <div id="carouselExampleIndicators" class="carousel slide mt-5" data-bs-ride="true">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            
-            @foreach ($carousel as $row )
-           @if($row->isactive == 1)
-            <div class="carousel-item active ">
-              <img src="{{asset('assets/img').'/'.$row->images}}"  style="height: 500px"
-              class="d-block w-100" alt="...">
-            </div>
-            @else
-            <div class="carousel-item">
-                <img src="{{asset('assets/img').'/'.$row->images}}"  style="height: 500px"
-                class="d-block w-100" alt="...">
-              </div>
-            @endif
-
-            @endforeach
-           
-          
-
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div> 
-
-    @endif
 
   
     
-    @if (count($announcement) >= 1)
+  {{--   @if (count($announcement) >= 1)
     <div class="container mt-5 ">
         <div class="mt-5">
             <div class="card-header">
@@ -468,7 +493,7 @@
                                                                  <span style="font-weight: bold">{{$item->name}}</span> 
                                                                       @endif
                                                                   @endforeach 
-                                                                </h5> --}}
+                                                                </h5>
 
                                             <small style="font-size:11px;float:right">
                                                 <span style="color: #e9d5d8"><time class="timeago"
@@ -497,7 +522,7 @@
         
     </div>
  
-@endif
+@endif --}}
     <script>
         $(document).ready(function() {
             $("time.timeago").timeago();

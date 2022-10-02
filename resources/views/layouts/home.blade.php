@@ -137,8 +137,7 @@
     @yield('videostream')
     @yield('sport_coordinators')
 
-    <br>
-    <br>
+  
     @isset($join)
 
     @else 

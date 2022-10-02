@@ -257,7 +257,7 @@ Route::controller(App\Http\Controllers\UserController::class)->group(function(){
         Route::get('update-account/{id}/{name}','updatecoordinator');
         Route::post('update_coordinator','update_coordinator')->name('update_coordinator');
         Route::get('Dashboard','dashboard')->name('dashboard');
-        Route::get('Join-   ','join')->name('join');
+        Route::get('Join','join')->name('join');
         Route::get('About','about')->name('about');
         Route::get('Join/Events/{id}/Event={name}','join_event')->name('join_event');
 

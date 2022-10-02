@@ -98,7 +98,7 @@ $('.result').html('<span style="font-weight:bolder;font-size:15px" class="text-s
 }else if (data == 'cantjoin') {
             $('.result').html('<span style="font-weight:bolder;font-size:15px" class="text-light hf">Sorry! You cannot join this game. </span>');
 }else {
-$('.result').html('<span style="font-weight:bolder;font-size:25px" class="text-danger hf">We are unable find your account. Please Make sure you have entered the correct Email. Or <a href="{{route("register")}}">Register</a> when you dont have an account. </span>');
+$('.result').html('<span style="font-weight:bolder;font-size:15px" class="text-light hf">We are unable find your account. Please Make sure you have entered the correct Email. Or <a href="{{route("register")}}">Register</a> when you dont have an account. </span>');
 }
 } 
 })

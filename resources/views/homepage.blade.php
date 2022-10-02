@@ -1,6 +1,7 @@
 @extends('layouts.home')
 @section('carousel')
-<div class="container">
+<div class="shadow" style=" background-color: #050000;
+background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%);">
  
       <div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
   <div class="carousel-inner shadow-sm revealc " id="c-inner" >
@@ -35,20 +36,23 @@
         </button>
       </div>
     
- 
-</div>
+      <button class="btnresult" 
+      onclick="window.location.href='{{route('allevents')}}' "
+      >Results</button>
+
 
 
  @endsection
 
  @section('schedule_events')
- <div class="linespacer container"><hr></div>
+ 
+
         
- <div class="titlebars" style="text-align: center">
+ {{-- <div class="titlebars" style="text-align: center">
   <h4 class="text-light title" style="font-size: 25px">WMSU PALARO {{date('Y')}}</h4>
-</div>
+</div> --}}
         
- <div class="container">
+ <div class="container mt-4" >
   <div class="row ">
             
               <div class="col-md-8 " id="Events" >
@@ -61,7 +65,7 @@
 
                 <div class="container" >
                   <!-- Flickity HTML init -->
-<div class="gallery js-flickity" style="padding: 50px"
+<div class="gallery js-flickity" 
 data-flickity-options='{"wrapAround": true }'>
 @if(count($sport)>=1)
 @foreach ($sport as $events)
@@ -97,12 +101,12 @@ $src =  asset('assets/img').'/'.$events->file;
    
 
       <span style="display: flex;align-items:center;justify-content:center" >
-      <button onclick="window.location.href='{{route('join',['id'=>$events->id])}}' " class="btnjoin">Join</button>
+  {{--     <button onclick="window.location.href='{{route('join',['id'=>$events->id])}}' " class="btnjoin">Join</button> --}}
        
       <form action="{{route('View')}}" method="post">
         @csrf
         <input type="hidden" name="id"  value="{{$events->id}}" >
-        <button type="submit" class="btnjoin" style=" margin-left:10px">View</button>
+        <button type="submit" class="btnjoin" >View</button>
       </form>
     
       </span>
@@ -148,7 +152,7 @@ $src =  asset('assets/img').'/'.$events->file;
                 </section> --}}
                 <br>
                 @if(count($sport)>=1)
-                <a href="{{route("allevents")}}" style="text-decoration: none;color:white;" class="mt-4">  <h5 class="hf" style="text-align: center;font-size:14px">View All Events</h5></a>
+                
                 @endif
               </div>
               <div class="col-md-4" >
@@ -209,7 +213,7 @@ $src =  asset('assets/img').'/'.$events->file;
              </div>
  </div>
 
-
+</div>
 
  <script>
   $(document).ready(function(){
@@ -224,16 +228,15 @@ $src =  asset('assets/img').'/'.$events->file;
  @endsection
 
 @section('videostream')
-            <div class="linespacer container"><hr></div>
+        
           
  <div class="container mt-5">
-  <h5 class="title" style="text-align: left">Stream</h5>
+  <h5 class="title text-dark" style="text-align: left">Stream <i class="fas fa-list"></i></h5>
    
             <div class="row">
 
 
-<div class="col-md-1"> </div>
-<div class="col-md-10" id="Media">
+<div class="col-md-8" id="Media">
   
   <div class="card" id="videoconscontroller">
 
@@ -283,167 +286,169 @@ $src =  asset('assets/img').'/'.$events->file;
   </div>
  
 </div>
-<div class="col-md-1"></div>
-
-<div class="col-md-1"></div>
-<div class="col-md-10">
-  <div class="row">
-   
-    <div class="col-md-8">
-  
-<h5 class="title" >EVENT COORDINATORS</h5>
-
-<br>
-<div class="container ">
-<div class="row" style="text-align: center">
-           @foreach($ecoordinator as $row)   
-           <div class="col-md-3 d-flex">
-             <div class="card mb-4 " style="background-color: rgba(224, 159, 17, 0.158)" >
-            <div class="card-body coordinators">
-                       <img src="{{asset('assets/img/wmsu.jpg')}}"  class="rounded-circle" alt="">
-                       <h6 class="hf text-danger">{{$row->name}}</h6>
-           <h6 style="font-size: 14px" class="text-light hf">
-            @foreach ($sport as $sp )
-                  @if($sp->id == $row->sports_id)
-                  {{$sp->name}}
-                  @endif
-            @endforeach
-          </h6>
-            </div>
-
-             </div>
-           </div>
-           @endforeach
-</div>
-</div>
-
-
-<h5 class="title" >COLLEGE COORDINATORS</h5>
-
-<br>
-<div class="container ">
-<div class="row" style="text-align: center">
-           @foreach($coordinator as $row)   
-           <div class="col-md-3 d-flex">
-            <div class="card mb-4 bg-dark" >
-            <div class="card-body coordinators">
-                       <img src="{{asset('assets/img/wmsu.jpg')}}"  class="rounded-circle" alt="">
-                       <h6 class="hf text-danger">{{$row->name}}</h6>
-                       <h6 style="font-size: 14px" class="text-light hf">
-                        @foreach ($college as $cc )
-                              @if($cc->id == $row->CollegeId)
-                              {{$cc->name}}
-                              @endif
-                        @endforeach
-                      </h6>
-            </div>
-
-             </div>
-           </div>
-           @endforeach
-</div>
-</div>
-
-
-
-
-
-    </div>
-    <div class="col-md-4">
+<div class="col-md-4">
     
-      <div class="" id="videocontroller">
-               
-                  <div class="card-body" >
-                    <h5 class="title" style="text-align: left">Videos</h5>
-          <div id="videocontents" class="overflow">
-            @php
-                $kunta = 0;
-            @endphp
-                @foreach($videos as $vid)   
-                @if($vid->id == 1)
-                  @else
-            @php
-                $kunta++;
-            @endphp
-                  
-                  @foreach ($sport as $event)
-                      @if($event->id == $vid->event)
-                      <div class="row mb-2">
-                        <div class="videocard" >
-                                   <div class="container">
-                                          
-                                          
-                                    <div class="">
-                                     
-                                           <div class="">
-                                            <h6 class="hf text-danger" style="font-size:11px" >
-                                            @foreach ($college as $item)
-                                               @if($item->id == $event->CollegeId)
-                                                {{$item->name}}
-                                               @endif
-                                            @endforeach
-                                            </h6>
-                                           </div>
-                                    
-                                    <div class="card-body">  
-                                      <div class="row">
-                                        <div class="col-md-4">
-                                          <img src="{{asset('assets/img/wmsu.jpg')}}" style="width:100%" alt="" class="rounded-circle">
-                                        </div>
-                                        <div class="col-md-8">
-                                          <h6 style="font-weight: bold;text-align:center" class="hf  txt shadow-sm text-light">{{$event->name}}
-                                          
-                                           
-                                          </h6>
-                                          <h6 class="text-secondary" style="font-weight: normal;font-size:12px;text-align:center" >
-                                            Stream now!
-                                          </h6> 
-                                             
-                                         <span style="float: right">
-                                         <button data-name="{{$event->name}}" id="{{$vid->id}}btnview" data-vid="{{$vid->id}}" class="btnview  mt-4">View Stream</button>
-                                         </span>
-                                        </div>
-                                      </div>
-                                             
-                                                                       </div>
-                                                           </div>
-                                             
-                                           
-                                            
-                                   </div>
-                        </div>
+  <div class="" id="videocontroller" >
            
-                       </div>
-                      @endif
-                  @endforeach
-            
-                @endif
-   
-      @endforeach
-                      @if($kunta >=1)
-                      @else 
-                      <div class="container">
-                        <h6 class="mt-5 hf " style="text-align: center;">
-                          <img src="https://cdn.shopify.com/s/files/1/0684/0685/products/no_video_grande.jpg?v=1428475340" alt="" style="width:100%">
-                          <br>
-                          No Event Videos Yet..
-                      </div>
-                   
-                      </h6>
-                      @endif
+              <div class="card-body" >
+                <h5 class="title text-dark" style="text-align: left">Videos</h5>
+      <div id="videocontents" class="overflow" style="width: 100%">
+        @php
+            $kunta = 0;
+        @endphp
+            @foreach($videos as $vid)   
+            @if($vid->id == 1)
+              @else
+        @php
+            $kunta++;
+        @endphp
+              
+              @foreach ($sport as $event)
+                  @if($event->id == $vid->event)
+                  <div class="row mb-2">
+                    <div class="videocard" >
+                               <div class="container">
+                                      
+                                      
+                                <div class="">
+                                 
+                                       <div class="">
+                                        <h6 class="hf text-danger" style="font-size:11px" >
+                                        @foreach ($college as $item)
+                                           @if($item->id == $event->CollegeId)
+                                            {{$item->name}}
+                                           @endif
+                                        @endforeach
+                                        </h6>
+                                       </div>
+                                
+                                <div class="card-body">  
+                                  <div class="row">
+                                    <div class="col-md-4">
+                                      <img src="{{asset('assets/img/wmsu.jpg')}}" style="width:100%" alt="" class="rounded-circle">
+                                    </div>
+                                    <div class="col-md-8">
+                                      <h6 style="font-weight: bold;text-align:center" class="hf  txt  text-dark">{{$event->name}}
+                                      
+                                       
+                                      </h6>
+                                      <h6 class="text-secondary" style="font-weight: normal;font-size:12px;text-align:center" >
+                                        Stream now!
+                                      </h6> 
+                                         
+                                     <span style="float: right">
+                                     <button data-name="{{$event->name}}" id="{{$vid->id}}btnview" data-vid="{{$vid->id}}" class="btnview  mt-4">View Stream</button>
+                                     </span>
+                                    </div>
+                                  </div>
+                                         
+                                                                   </div>
+                                                       </div>
+                                         
+                                       
+                                        
+                               </div>
+                    </div>
+       
+                   </div>
+                  @endif
+              @endforeach
+        
+            @endif
+
+  @endforeach
+                  @if($kunta >=1)
+                  @else 
+                  <div class="container">
+                    <h6 class="mt-5 hf " style="text-align: center;">
+                      <img src="https://cdn.shopify.com/s/files/1/0684/0685/products/no_video_grande.jpg?v=1428475340" alt="" style="width:100%">
+                      <br>
+                      No Event Videos Yet..
                   </div>
+               
+                  </h6>
+                  @endif
+              </div>
 
 
-                  </div>
-     
+              </div>
+ 
 </div>
-  </div>
-  </div>
-
 </div>
-<div class="col-md-1"></div>
+
+
+
 
             </div>
+ </div>
+
+ <div class="bg-dark " style="margin-top: 120px; ">
+  <div class="container">
+    <div class="row">
+   
+      <div class="col-md-12">
+    
+  <h5 class="title" >EVENT COORDINATORS</h5>
+  
+  <br>
+  <div class="container ">
+  <div class="row" style="text-align: center">
+             @foreach($ecoordinator as $row)   
+             <div class="col-md-2 d-flex">
+               <div class="card mb-4 " style="background-color: rgba(224, 159, 17, 0.158)" >
+              <div class="card-body coordinators">
+                         <img src="{{asset('assets/img/wmsu.jpg')}}"  class="rounded-circle" alt="">
+                         <h6 class="hf text-danger">{{$row->name}}</h6>
+             <h6 style="font-size: 14px" class="text-light hf">
+              @foreach ($sport as $sp )
+                    @if($sp->id == $row->sports_id)
+                    {{$sp->name}}
+                    @endif
+              @endforeach
+            </h6>
+              </div>
+  
+               </div>
+             </div>
+             @endforeach
+  </div>
+  </div>
+  
+  
+  <h5 class="title" >COLLEGE COORDINATORS</h5>
+  
+  <br>
+  <div class="container ">
+  <div class="row" style="text-align: center">
+             @foreach($coordinator as $row)   
+             <div class="col-md-2 d-flex">
+              <div class="card mb-4 bg-dark" >
+              <div class="card-body coordinators">
+                         <img src="{{asset('assets/img/wmsu.jpg')}}"  class="rounded-circle" alt="">
+                         <h6 class="hf text-danger">{{$row->name}}</h6>
+                         <h6 style="font-size: 14px" class="text-light hf">
+                          @foreach ($college as $cc )
+                                @if($cc->id == $row->CollegeId)
+                                {{$cc->name}}
+                                @endif
+                          @endforeach
+                        </h6>
+              </div>
+  
+               </div>
+             </div>
+             @endforeach
+  </div>
+  </div>
+  
+  
+  
+  
+  
+      </div>
+  
+    </div>
+  </div>
  </div>
 
  <script>

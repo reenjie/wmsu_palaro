@@ -1,12 +1,13 @@
 @extends('layouts.home')
 @section('carousel')
-<div class="container">
+<div class="container shadow-lg" style="background-color: #050000;
+background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%); ">
     @php
         $join = '';
     @endphp
-          <div class="row mt-5">
+          <div class="row mt-3">
             <div class="col-md-2"></div>
-            <div class="col-md-8" style="color:white">
+            <div class="col-md-8 p-5" style="color:white">
                 @foreach ($sport as $row )
                 <style>
                     #visitlink {
@@ -155,7 +156,31 @@
                         </div>
 
                         </ul>
+                        <h6 class="mt-4">Participated Colleges</h6>
+
+                            <ul style="font-size: 14px">
+                              @php
+                 $ptcollege = DB::select("SELECT * FROM `colleges` WHERE id in (
+                        select CollegeId from users where id in (
+                        select user_id from participants where team in (
+                            select id from teams where sports_id ='$row->id' 
+                        )
+                        )
+
+
+                     )");
+
+                              @endphp
+
+                              @foreach ($ptcollege as $cl )
+
+                              <li>{{$cl->name}}</li>
+                                  
+                              @endforeach
+                            </ul>
                     </div>
+
+                    
                     <hr>
                 </div>
               
