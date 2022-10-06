@@ -126,6 +126,11 @@
      transform: rotateX(0); */
 }
 
+#carouselExampleControls {
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
 /*    @keyframes tv {
      0%{
           opacity: 0;
@@ -583,5 +588,9 @@ input::-webkit-inner-spin-button {
 @media screen and (max-width: 768px) {
     .c-img {
         width: 100%;
+    }
+    #carouselExampleControls {
+        position: relative;
+        padding: unset;
     }
 }

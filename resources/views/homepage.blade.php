@@ -3,38 +3,40 @@
 <div class="shadow" style=" background-color: #050000;
 background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%);">
  
-      <div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
-  <div class="carousel-inner shadow-sm revealc " id="c-inner" >
-         
-
-          @foreach ($carousel as $row )
-            @if($row->id == 1)
-            <div class="carousel-item active ">
-              <img src="{{asset('assets/img').'/'.$row->images}}" class="c-img" alt="...">
-            </div>
-
-            @else
-            <div class="carousel-item">
-              <img src="{{asset('assets/img').'/'.$row->images}}" class=" c-img" alt="...">
-            </div>
-            @endif
-
-      
-          @endforeach
-        
-      
-   
-        </div>
-        <button  class="carousel-control-prev carousel-btns" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-          <span style="border-radius:5px"  class="carousel-control-prev-icon" aria-hidden="true"></span>
+   <div class="">
+    <div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
+      <div class="carousel-inner shadow-sm revealc " id="c-inner" >
+             
+    
+              @foreach ($carousel as $row )
+                @if($row->id == 1)
+                <div class="carousel-item active ">
+                  <img src="{{asset('assets/img').'/'.$row->images}}" class="c-img" alt="...">
+                </div>
+    
+                @else
+                <div class="carousel-item">
+                  <img src="{{asset('assets/img').'/'.$row->images}}" class=" c-img" alt="...">
+                </div>
+                @endif
+    
+          
+              @endforeach
+            
+          
        
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button    class="carousel-control-next carousel-btns" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-          <span class="carousel-control-next-icon " style="border-radius:5px" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
+            </div>
+            <button  class="carousel-control-prev carousel-btns" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+              <span style="border-radius:5px"  class="carousel-control-prev-icon" aria-hidden="true"></span>
+           
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button    class="carousel-control-next carousel-btns" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <span class="carousel-control-next-icon " style="border-radius:5px" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+   </div>
     
       <button class="btnresult" 
       onclick="window.location.href='{{route('allevents')}}' "
