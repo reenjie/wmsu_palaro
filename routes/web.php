@@ -26,6 +26,15 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
+/* For Results. TEam Table
+
+1= 1st runner up
+2 = 2nd runner up
+3 = Champion
+
+
+*/
+
 Route::get('/', function () {
     /**Email Sessions */
     
@@ -105,6 +114,12 @@ Route::get('allevents',function(){
   
 return view('Allevent',compact('sport','game','tally','team','user'));
 })->name('allevents');
+
+
+Route::get('/Tally',function(){
+    $college = College::all();
+    return view('Tally',compact('college'));
+})->name('Tally');
 
 Auth::routes();
 
@@ -323,6 +338,10 @@ Route::controller(App\Http\Controllers\EventController::class)->group(function()
         Route::get('settally','settally')->name('settally');    
 
         Route::get('firslogin','firslogin')->name('firslogin');
+
+        Route::post('updateteam','updateteam')->name('updateteam');
+
+        Route::get('setresult','setresult')->name('setresult');
     });
 
 });

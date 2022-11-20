@@ -327,7 +327,7 @@ public function update_coordinator(Request $request){
        
        
         $user =DB::select('select * from users where id in (select user_id from participants where  isverified = 2 and sports_id ='.$sportsid.' )  '); 
-        $allteam = Team::all();
+        $allteam = Team::where('sports_id',$sportsid)->get();
         return view('Event.participants',compact('college','myevent','count','user','participants','sportevent','available_slots','team','allteam'));
     }
     public function delete_participants($id){
@@ -394,8 +394,8 @@ public function update_coordinator(Request $request){
             $ename= $value->name;
             $maxparticipants = $value->nop; 
            }
-           $allteam = Team::all();
-
+           $allteam = Team::where('sports_id',$sportsid)->get();
+        
            $available_slots = $maxparticipants - count($numofparticipants);
         
            
@@ -642,6 +642,7 @@ public function update_coordinator(Request $request){
             'sports_id'=>$sportsid,
             'name'=>$request->input('teamname'),
             'status'=>0,
+            'result'=>0,
         ]);
         
         return redirect(route('e.team'))->with('Success','Added Successfully!');
@@ -698,7 +699,7 @@ public function update_coordinator(Request $request){
        
        
         $user =DB::select('select * from users where id in (select user_id from participants where  isverified = 2 and sports_id ='.$sportsid.' and team='.$id.' )  '); 
-        $allteam = Team::all();
+        $allteam = Team::where('sports_id',$sportsid)->get();
         return view('Event.sortparticipants',compact('college','myevent','count','user','participants','sportevent','available_slots','team','allteam'));
     }
 
@@ -856,5 +857,25 @@ public function update_coordinator(Request $request){
             'password'=>Hash::make($request->newpass),
         ]);
        
+    }
+
+    public function updateteam(Request $request){
+        $id = $request->input('id');
+        $team = $request->input('teamname');
+        Team::where('id',$id)->update([
+            'name'=>$team,
+        ]);
+
+        return redirect()->back()->with('Success','Team Name Updated Successfully!');
+
+    }
+
+    public function setresult(Request $request){
+        $id = $request->id;
+        $val = $request->val;
+        Team::where('id',$id)->update([
+            'result'=>$val,
+        ]);
+
     }
 }

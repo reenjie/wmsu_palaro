@@ -167,7 +167,7 @@
                 </div>
             </div>
 
-          
+{{--           
             @if(count($team)>=1)
             <div class="row mt-4">
                 <h5 class="hf text-light">TEAMs</h5>
@@ -182,7 +182,7 @@
               </nav>
            
             </div>
-            @endif
+            @endif --}}
         @endforeach
 
 

@@ -95,7 +95,8 @@
                                             @if($row->status == 1)
                                        
                                         @elseif($row->status==2)
-                                            
+                                        <button data-id="{{$row->id}}" class="deletematch btnhide btn btn-danger btn-sm ">DELETE THIS MATCH</button>
+
                                         @else 
                                         <button data-id="{{$row->id}}" class="deletematch btnhide btn btn-danger btn-sm ">DELETE THIS MATCH</button>
 
@@ -113,9 +114,32 @@
                                                 <div class="col-md-6">
                                                     <div class="card shadow">
                                                         <div class="card-body">
+                   
+                                                        
+                                                 
                                 
                                     @foreach($team as $tm)
                                @if($tm->id == $pt->team)
+
+                               @if($row->status == 2)
+                               <select name="" data-team="{{$tm->id}}" class="ondeclare form-select mb-4 bg-dark text-light" id="" value="{{$tm->result}}"  style="text-align: center">
+                                    @if($tm->result ==0)
+                                    <option value="0"> -- Declare Tally --</option>
+                                    @elseif ($tm->result ==1)
+                                    <option value="1">1st Runner Up</option>
+                                    @elseif ($tm->result ==2)
+                                    <option value="2">2nd Runner Up</option>
+                                    @elseif ($tm->result ==3)
+                                    <option value="3">Champion</option>
+                                    @endif
+                                   
+                                  <option value="3">Champion</option>
+                                   <option value="1">1st Runner Up</option>
+                                   <option value="2">2nd Runner Up</option>
+                                   <option value="0">UnSet</option>
+                                    </select>
+                                               
+                                @endif
                           <h6 class="text-danger hf"
                                style="font-weight: bold;font-size:20px;text-align:center">
                                {{ $tm->name }}</h6>
@@ -343,6 +367,26 @@ window.location.href='{{route("e.resetmatch")}}?id='+id;
 
        }) 
        }
+    })
+
+    $('.ondeclare').change(function(){
+        var id = $(this).data('team');
+
+        var val = $(this).val();
+       
+
+        $.ajax({
+                  url:"{{route('e.setresult')}}",
+                  method:"GET", 
+                  data  : {id:id,val:val},
+                  success :function(data){
+                   
+                    swal("Result Set!", "You have Successfully set the Results", "success");
+                  }
+
+       }) 
+
+       
     })
 </script>
 @endsection

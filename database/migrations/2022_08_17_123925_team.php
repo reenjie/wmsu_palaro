@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('sports_id');   
             $table->text('name');  
             $table->integer('status');
+            $table->integer('result');
          
         });
     }

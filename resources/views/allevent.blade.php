@@ -8,7 +8,6 @@ background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%); ">
           <div class="row mt-3">
             <div class="col-md-2"></div>
             <div class="col-md-8 p-5" style="color:white">
-                @foreach ($sport as $row )
                 <style>
                     #visitlink {
                         font-size:14px;text-decoration:none;float:right;color:rgb(241, 241, 139);
@@ -19,75 +18,72 @@ background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%); ">
                         transition: all ease 0.2s;
                     }
                 </style>
-                <div class="container mb-2">
-                 
+               
+                <ul class="list-group list-group-flush">
+                @foreach ($sport as $row )
+             
+         
+                <li class="mb-5">
                     <form action="{{route('View')}}" method="post">
                         @csrf
                         <input type="hidden" name="id"  value="{{$row->id}}" >
                         <button type="submit" class="btn btn-link" id="visitlink"  >Visit Page</button>
-                      </form>
-                    <h5 class="hf text-warning">{{$row->name}}</h5>
+                      </form> 
+                      <h5 class="hf text-warning">{{$row->name}}</h5>
                 
                     <hr>
                     <h6 class="text-light">Match & Score Board</h6>
-                    <div class="">
-                        <ul class="list-group list-group-flush">
-
-                            @foreach ($game as $g)
-                                @if($g->sports_id == $row->id)
-                                <li class="">
-                                    <h6 class="hf text-light" style="font-weight: bold">{{$g->name}}</h6>
+                    @foreach ($game as $g)
+                    @if($g->sports_id == $row->id)
+                    <h6 class="hf text-light" style="font-weight: bold">{{$g->name}}</h6>
     
-                                    <span style="font-size:12px" class="text-light">Match</span>
-                                    <br>
-                                    {{-- <h6 class="hf text-danger" style="text-align: center"> Vs</h6> --}}
-                                    <div class="row">
-                                    @foreach ($tally as $mytally)
+                    <span style="font-size:12px" class="text-light">Match</span>
+                    <br>
+                    <div class="row"  >
+                    @foreach ($tally as $mytally)
                                        
-                                    @if($g->id == $mytally->match_id)
-                                 
-                                 
-                                   
-                                 
-                                        @foreach ($team as $key => $group)
-                                          @if($mytally->team == $group->id)
-                                          
-                                        
-                                                <div class="col-md-6">
-                                               
-                                                    <span class="hf text-light">{{$group->name}}</span>    
-                                                    <br>
-                                                    <span class="text-primary" style="font-size:13px">
-                                                    @if($mytally->isofficial == 0)
-                                                    Unofficial
-                                                    @else 
-                                                    OFFICIAL
-                                                    @endif
-                                                    </span>
-                                                    <br>
-                                                    <span class="text-light" style="font-size: 12px">
-                                                        Score: <span class="text-light">{{$mytally->tally}}</span>
-                                                    </span>
-                                                   
-                                                </div>
-                                              
-                                        
-                                          
-                                         
+                    @if($g->id == $mytally->match_id)
+                  
+                        @foreach ($team as $key => $group)
+                        @if($mytally->team == $group->id)
+                      
+                            <div class="col-md-6 mb-2 p-4" style="border:1px solid white" >
+                         
+                                <span class="hf text-light">{{$group->name}}</span>    
+                                <br>
+                                <span class="text-primary" style="font-size:13px">
+                                @if($mytally->isofficial == 0)
+                                Unofficial
+                                @else 
+                                OFFICIAL
+                                @endif
+                                </span>
+                                <br>
+                                <span class="text-light" style="font-size: 12px">
+                                    Score: <span class="text-light">{{$mytally->tally}}</span>
+                                </span>
+                               
+                            </div>
+                       
+                     
     
-                                         @endif
-                                        @endforeach
-    
-                                            
-                                              
-                                      @foreach ($user as $key => $independent)
+                        @endif
+                        @endforeach
+                     
+                    @endif
+                    @endforeach
+                </div>
+                      @endif
+                    @endforeach
+
+                    @foreach ($user as $key => $independent)
                                         @if($mytally->user_id == $independent->id)
                                                
                                           @for ($i = 0; $i < 3; $i++)
                                               @if($i == 0)
                                                   @if($key == 0)
                                               <div class="col-md-5">
-                                             
+                                             oooooo
                                                   <span class="hf text-light">{{$independent->name}}</span>    
                                                   <br>
                                                   <span class="text-primary" style="font-size:13px">@if($mytally->isofficial == 0)
@@ -105,7 +101,7 @@ background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%); ">
                                               @endif
                                               @if($i == 1)
                                              <div class="col-md-2" id="k{{$i}}">
-                                            {{--   <h6 class="text-danger hf ">VS</h6> --}}
+                                        
                                              </div>
                                               @endif
                                               @if($i == 2)
@@ -134,58 +130,43 @@ background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%); ">
                                         
                                        
     
-                                       @endif
+                                       @endif 
                                       @endforeach
-                                    
-                                        
-    
-    
-                                   
-                                 
-    
-    
-    
-                                    @endif
-                                    @endforeach
-                                  {{--   <span class="text-light badge bg-danger"
-                                        style="float: right">5</span> --}}</li> 
-                                @endif
-
-                        
-                            @endforeach
-                        </div>
-
-                        </ul>
-                        <h6 class="mt-4">Participated Colleges</h6>
-
-                            <ul style="font-size: 14px">
-                              @php
-                 $ptcollege = DB::select("SELECT * FROM `colleges` WHERE id in (
-                        select CollegeId from users where id in (
-                        select user_id from participants where team in (
-                            select id from teams where sports_id ='$row->id' 
-                        )
-                        )
-
-
-                     )");
-
-                              @endphp
-
-                              @foreach ($ptcollege as $cl )
-
-                              <li>{{$cl->name}}</li>
-                                  
-                              @endforeach
-                            </ul>
-                    </div>
-
+        
                     
-                    <hr>
-                </div>
-              
+                    <h6 class="mt-4">Participated Colleges</h6>
+
+                    <ul style="font-size: 14px">
+                      @php
+         $ptcollege = DB::select("SELECT * FROM `colleges` WHERE id in (
+                select CollegeId from users where id in (
+                select user_id from participants where team in (
+                    select id from teams where sports_id ='$row->id' 
+                )
+                )
+
+
+             )");
+
+                      @endphp
+
+                      @foreach ($ptcollege as $cl )
+
+                      <li>{{$cl->name}}</li>
+                          
+                      @endforeach
+                    </ul>
+
+
+                </li>
 
                 @endforeach
+
+            </ul>
+             
+            
+           
+           
 
             </div>
             <div class="col-md-2"></div>

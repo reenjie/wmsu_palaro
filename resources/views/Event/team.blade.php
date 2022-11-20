@@ -43,8 +43,40 @@
 
           <div class="card shadow mb-2">
             <div class="card-header">
-                        <h6 class="hf text-danger" style="font-weight:bold">{{$row->name}}</h6>
+         
+              <button class="btn btn-light btn-sm text-success" style="float:right" data-bs-toggle="modal" data-bs-target="#editteam{{$row->id}}">Edit <i class="fas fa-edit"></i> </button>
+
+            
+
+              <div class="modal fade" id="editteam{{$row->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{route('e.updateteam')}}" method="post">
+                            @csrf
+                   
+                    <div class="modal-body">
+                <h6 class="hf">TEAM Name :</h6>
+                <input type="text" value="{{$row->name}}" class="form-control" name="teamname" required>
+                <input type="hidden" value="{{$row->id}}" name="id">
+                    </div>
+                    <div class="modal-footer">
+                  
+                      <button type="submit" class="btn btn-dark btn-sm">Update</button>
+                    </div>
+                </form>
+                  </div>
+                </div>
+              </div>
+
+           
+    
                        
+                        <h5 class="hf text-danger" style="font-weight:bold">{{$row->name}}</h5>
+
+                      
             </div>
             <div class="card-body">
             <h6 class="hf">Members:</h6>

@@ -37,7 +37,10 @@ background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%);">
             </button>
           </div>
    </div>
-    
+          
+   <button class="btntally" 
+   onclick="window.location.href='{{route('Tally')}}' "
+   >Tally</button>
       <button class="btnresult" 
       onclick="window.location.href='{{route('allevents')}}' "
       >Results</button>
