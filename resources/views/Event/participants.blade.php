@@ -161,7 +161,7 @@
                     @for ($i = 0; $i < count($noteam); $i++)
                        
                         <script>
-                           $('#{{$noteam[$i]}}').html('  <span class="text-secondary">INDEPENDENT</span>');
+                           $('#{{$noteam[$i]}}').html('  <span class="text-secondary">UnAssigned</span>');
                         </script> 
                     @endfor
                         

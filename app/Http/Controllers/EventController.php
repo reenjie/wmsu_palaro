@@ -368,7 +368,7 @@ public function update_coordinator(Request $request){
     } */
 
     public function addParticipants(Request $request){
-       
+ 
         $collegeid = Auth::user()->CollegeId;
         $sportsid = Auth::user()->sports_id;
         $team = $request->input('team');
@@ -380,7 +380,7 @@ public function update_coordinator(Request $request){
           $sportsdata = Sportevent::where('CollegeId',$collegeid)->get();
           $sportevent = Auth::user()->sports_id;
         
-          $data = DB::select('select * from users where id not in (select user_id from participants where sports_id='.$sportevent.' and user_type="student" ) and id not in (select user_id from blacklists where sports_id='.$sportevent.') ');
+          $data = DB::select('select * from users where id not in (select user_id from participants where sports_id='.$sportevent.' and team = null  ) and id not in (select user_id from blacklists where sports_id='.$sportevent.') and user_type="student" ');
 
           
         $selected = $request->input('selected_ids');
@@ -405,8 +405,17 @@ public function update_coordinator(Request $request){
                 
                     foreach ($selected as $key => $value) {
                        
-                       
-                        Participant::create([
+                        //Validate first.  if user already exist in a team
+                       $validating =  Participant::where('user_id',$value)->where('team',null)->where('sports_id',$sportevent)->get();
+
+                       if(count($validating) >= 1){
+                    
+                        $ppid = $validating[0]['id'];
+                        Participant::where('id',$ppid)->update([
+                            'team'=>$team,
+                        ]);
+                       }else {
+                  Participant::create([
                 'sports_id' => $sportevent,
                'user_id'=> $value,
                'CollegeId' => Auth::user()->CollegeId,
@@ -416,12 +425,16 @@ public function update_coordinator(Request $request){
                'team'=>$team,
                'status'=>0,
                         ]); 
+                       }
+
+                       
+           
         
                         }
-                        return redirect()->route('e.participants')->with('Success','Participants Added Successfully!');  
+                      return redirect()->route('e.participants')->with('Success','Participants Added Successfully!');  
                    }else {
               
-          return view('Event.action.add_participants',compact('data','college','count','sportevent','ename','available_slots','myevent','allteam'));
+         return view('Event.action.add_participants',compact('data','college','count','sportevent','ename','available_slots','myevent','allteam'));
                   
                  
                  
@@ -430,9 +443,9 @@ public function update_coordinator(Request $request){
                }else {
                return redirect()->back()->with('Error','Please Select Sports/Events.');
                echo 'please select sport';
-               }  
+               }   
 
-        
+         
 
     
     }
