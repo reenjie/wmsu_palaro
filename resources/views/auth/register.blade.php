@@ -40,7 +40,7 @@
                     <label for="contact" class="af col-form-label text-md-end">{{ __('Contact No.') }}</label>
 
              
-                    <input id="contact" type="number" class="af form-control @error('contact') is-invalid @enderror" onKeyPress="if(this.value.length==11) return false;"  name="contact" value="{{ old('contact') }}" required >
+                    <input id="contact" type="text"  onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57)) " class="af form-control @error('contact') is-invalid @enderror" maxlength="11"  name="contact"  value="{{ old('contact') }}" required >
 
                     @error('contact')
                         <span class="invalid-feedback af" role="alert">

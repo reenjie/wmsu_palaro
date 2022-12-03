@@ -88,7 +88,16 @@
                         @foreach ($user as $member)
                             @if($member->id == $participants->user_id)
                         
-                            <li class="list-group-item"><span class="text-primary">{{$member->name}} <br><span class="text-secondary" style="font-size:12px">{{$member->email}}</span></span> 
+                            <li class="list-group-item"><span class="text-primary">{{$member->name}} <br><span class="text-secondary" style="font-size:12px">{{$member->email}}</span>
+                            <br>
+                            @if($participants->isverified == 0)
+
+                            @else 
+
+                            
+                            <span class="badge badge-success bg-success">VERIFIED</span>
+                            </span> 
+                            @endif
                         <span style="float: right">
             <div class="dropdown">
             <button class="btn btn-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
