@@ -168,10 +168,12 @@
 .fs {
     font-size: 15px;
 }
-.btnresult {
+#btninfos {
     position: absolute;
     right: 15%;
     margin-top: 10px;
+}
+.btnresult {
     outline: none;
     border: none;
     background: transparent;
@@ -181,23 +183,20 @@
     border: 1px solid white;
     padding: 5px;
     background-color: #2b0303;
+    width: 150px;
 }
 .btnresult:hover {
     background-color: #420303;
 }
 
 .btntally {
-    position: absolute;
-    right: 21%;
-
-    margin-top: 10px;
     outline: none;
     border: 1px solid white;
     background: transparent;
     color: white;
     font-size: 15px;
     text-transform: uppercase;
-
+    width: 150px;
     padding: 5px;
     background-color: #2b0303;
 }
@@ -228,7 +227,7 @@
     text-decoration: none;
     font-family: "Mate SC", serif;
     padding: 5px;
-    font-size: 14px;
+    font-size: 16px;
     color: rgb(218, 209, 209);
 }
 .navs a:hover {
@@ -237,7 +236,7 @@
     border-radius: 5px;
 }
 #text-wmsu {
-    font-size: 15px;
+    font-size: 16px;
 }
 iframe {
     width: 100%;

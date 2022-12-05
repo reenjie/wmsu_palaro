@@ -1,7 +1,8 @@
 @extends('layouts.home')
 @section('carousel')
-<div class="shadow" style=" background-color: #050000;
-background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%);">
+<div class="shadow" style=" background-color: #5a0b0b;
+">
+{{-- background-image: linear-gradient(90deg, #b90707 0%, #b90707 100%); --}}
  
    <div class="">
     <div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
@@ -38,13 +39,16 @@ background-image: linear-gradient(90deg, #1a0f0f 0%, #861c1cef 100%);">
           </div>
    </div>
           
-   <button class="btntally" 
-   onclick="window.location.href='{{route('Tally')}}' "
-   >Tally</button>
-      <button class="btnresult" 
-      onclick="window.location.href='{{route('allevents')}}' "
-      >Results</button>
-
+   <div id="btninfos">
+    <button class="btntally" 
+    onclick="window.location.href='{{route('Tally')}}' "
+    >Tally</button>
+       <button class="btnresult" 
+       onclick="window.location.href='{{route('allevents')}}' "
+       >Results</button>
+ 
+   </div>
+  
 
 
  @endsection
@@ -236,13 +240,13 @@ $src =  asset('assets/img').'/'.$events->file;
         
           
  <div class="container mt-5">
-  <h5 class="title text-dark" style="text-align: left">Stream <i class="fas fa-list"></i></h5>
+
    
             <div class="row">
 
 
 <div class="col-md-8" id="Media">
-  
+  <h5 class="title text-dark" style="text-align: left">Stream <i class="fas fa-list"></i></h5>
   <div class="card" id="videoconscontroller">
 
               <div class="container" id="selectedvideo">
@@ -292,11 +296,11 @@ $src =  asset('assets/img').'/'.$events->file;
  
 </div>
 <div class="col-md-4">
-    
+  <h5 class="title text-dark" style="text-align: left">Videos</h5>
   <div class="" id="videocontroller" >
-           
+  
               <div class="card-body" >
-                <h5 class="title text-dark" style="text-align: left">Videos</h5>
+               
       <div id="videocontents" class="overflow" style="width: 100%">
         @php
             $kunta = 0;
@@ -397,7 +401,9 @@ $src =  asset('assets/img').'/'.$events->file;
   
   <br>
   <div class="container ">
-  <div class="row" style="text-align: center">
+  {{-- <div class="row" style="text-align: center">
+
+   
              @foreach($ecoordinator as $row)   
              <div class="col-md-2 d-flex">
                <div class="card mb-4 " style="background-color: rgba(224, 159, 17, 0.158)" >
@@ -416,7 +422,52 @@ $src =  asset('assets/img').'/'.$events->file;
                </div>
              </div>
              @endforeach
-  </div>
+  </div> --}}
+  <style>
+.xscroll::-webkit-scrollbar {
+    width: 10px;
+    height: 20px;
+}
+
+/* Track */
+.xscroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+.xscroll::-webkit-scrollbar-thumb {
+    background: rgba(90, 28, 28, 0.959);
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+.xscroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(128, 37, 37, 0.959);
+}
+  </style>
+ <div class="xscroll"  style="width:100%;overflow-x:scroll;display:inline-flex;overflow-y:hidden">
+      @foreach($ecoordinator as $row)   
+    <div class="d-flex align-items-stretch" style="width: 300px;margin-left:10px;padding:10px">
+        <div class="card pic " style="background-color: rgba(224, 159, 17, 0.158);width:150px" >
+          <div class="card-body coordinators">
+                     <img src="{{asset('assets/img/wmsu.jpg')}}"  class="rounded-circle" alt="">
+                     <h6 class="hf text-danger">{{$row->name}}</h6>
+         <h6 style="font-size: 14px" class="text-light hf">
+          @foreach ($sport as $sp )
+                @if($sp->id == $row->sports_id)
+                {{$sp->name}}
+                @endif
+          @endforeach
+        </h6>
+          </div>
+
+           </div>
+          </div>
+    
+      @endforeach
+     
+    </div>
+ 
   </div>
   
   
@@ -424,7 +475,7 @@ $src =  asset('assets/img').'/'.$events->file;
   
   <br>
   <div class="container ">
-  <div class="row" style="text-align: center">
+  {{-- <div class="row" style="text-align: center">
              @foreach($coordinator as $row)   
              <div class="col-md-2 d-flex">
               <div class="card mb-4 bg-dark" >
@@ -443,6 +494,29 @@ $src =  asset('assets/img').'/'.$events->file;
                </div>
              </div>
              @endforeach
+  </div> --}}
+
+  <div class="xscroll mb-4  "  style="width:100%;overflow-x:scroll;display:inline-flex;overflow-y:hidden">
+    @foreach($coordinator as $row)   
+  <div class="d-flex align-items-stretch" style="width: 300px;margin-left:10px;padding:10px">
+      <div class="card pic  bg-dark " style="background-color: rgba(224, 159, 17, 0.158);width:150px" >
+        <div class="card-body coordinators">
+                   <img src="{{asset('assets/img/wmsu.jpg')}}"  class="rounded-circle" alt="">
+                   <h6 class="hf text-danger">{{$row->name}}</h6>
+                   <h6 style="font-size: 14px" class="text-light hf">
+                    @foreach ($college as $cc )
+                          @if($cc->id == $row->CollegeId)
+                          {{$cc->name}}
+                          @endif
+                    @endforeach
+                  </h6>
+        </div>
+
+         </div>
+        </div>
+  
+    @endforeach
+   
   </div>
   </div>
   

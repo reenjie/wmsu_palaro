@@ -40,92 +40,99 @@
         </div>
     </nav>
     <nav class="nav2" id="nav2">
-        <div class="container-fluid row">
-            <div class="col-md-6">
-                <a class="navbar-brand logo hf" href="/">
-                    <img src="{{ asset('assets/img/wmsu.jpg') }}" class="rounded-circle" alt="">
-                    {{-- <img src="{{asset('assets/img/wmsu.jpg')}}" alt=""> --}}
-                    <span id="text-wmsu">Western Mindanao State University</span>
-                </a>
-            </div>
-            <div class="col-md-6">
-                @isset($hidenav)
-                @else
-                    <div class="navs">
-                        <a href="/">Home</a>
-                        <a href="#Events">Events</a>
-                        <a href="#Media">Media</a>
-                        <a href="#Announcement">Announcement</a>
-                        <a href="">About</a>
-
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="container row">
+                    <div class="col-md-6 mt-3">
+                        <a class="navbar-brand logo hf" href="/">
+                            <img src="{{ asset('assets/img/wmsu.jpg') }}" class="rounded-circle" alt="">
+                            
+                            <span id="text-wmsu" style="text-transform: uppercase">Western Mindanao State University</span>
+                        </a>
                     </div>
-                @endisset
-
-                @if (Auth::check())
-                    {{-- If Login.. --}}
-                    <div class="dropdown" id="Options">
-                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <span style="font-weight: bold">{{ Auth::user()->name }}</span>
-                            @isset($count)
-                                @if ($count >= 1)
-                                    <span class="badge bg-danger rounded-pill text-bg-danger">{{ $count }}</span>
-                                @endif
-                            @endisset
-                            <br>
-                            <span style="font-size:13px">Profile</span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            @if (Auth::user()->user_type == 'superadmin')
-                                <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-
-                                <li><a class="dropdown-item" href="{{ route('admin.profile') }}">MyProfile</a></li>
-                            @elseif(Auth::user()->user_type == 'ecoordinator')
-                                <li><a class="dropdown-item" href="{{ route('e.dashboard') }}">Dashboard</a></li>
-
-                                <li><a class="dropdown-item" href="{{ route('e.profile') }}">MyProfile</a></li>
-                            @elseif(Auth::user()->user_type == 'coordinator')
-                                <li><a class="dropdown-item" href="{{ route('coordinator.dashboard') }}">Dashboard</a>
-                                </li>
-                                @isset($count)
-                                    @if ($count >= 1)
-                                        <li>
-                                            <a href="{{ route('coordinator.participants') }}" class="dropdown-item">
-                                                <span class="position-relative">Participants
-
-
-
-                                                    <span
-                                                        class="badge bg-danger rounded-pill text-bg-danger">{{ $count }}</span>
-
-
-                                                </span>
-                                            </a>
+                    <div class="col-md-6 mt-3">
+                        @isset($hidenav)
+                        @else
+                            <div class="navs">
+                                <a href="/">Home</a>
+                                <a href="#Events">Events</a>
+                                <a href="#Media">Media</a>
+                                <a href="#Announcement">Announcement</a>
+                                <a href="">About</a>
+        
+                            </div>
+                        @endisset
+        
+                        @if (Auth::check())
+                        
+                            <div class="dropdown" id="Options">
+                                <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span style="font-weight: bold">{{ Auth::user()->name }}</span>
+                                    @isset($count)
+                                        @if ($count >= 1)
+                                            <span class="badge bg-danger rounded-pill text-bg-danger">{{ $count }}</span>
+                                        @endif
+                                    @endisset
+                                    <br>
+                                    <span style="font-size:13px">Profile</span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    @if (Auth::user()->user_type == 'superadmin')
+                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+        
+                                        <li><a class="dropdown-item" href="{{ route('admin.profile') }}">MyProfile</a></li>
+                                    @elseif(Auth::user()->user_type == 'ecoordinator')
+                                        <li><a class="dropdown-item" href="{{ route('e.dashboard') }}">Dashboard</a></li>
+        
+                                        <li><a class="dropdown-item" href="{{ route('e.profile') }}">MyProfile</a></li>
+                                    @elseif(Auth::user()->user_type == 'coordinator')
+                                        <li><a class="dropdown-item" href="{{ route('coordinator.dashboard') }}">Dashboard</a>
                                         </li>
+                                        @isset($count)
+                                            @if ($count >= 1)
+                                                <li>
+                                                    <a href="{{ route('coordinator.participants') }}" class="dropdown-item">
+                                                        <span class="position-relative">Participants
+        
+        
+        
+                                                            <span
+                                                                class="badge bg-danger rounded-pill text-bg-danger">{{ $count }}</span>
+        
+        
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        @endisset
+        
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('coordinator.announcement') }}">Announcement</a></li>
                                     @endif
-                                @endisset
-
-                                <li><a class="dropdown-item"
-                                        href="{{ route('coordinator.announcement') }}">Announcement</a></li>
-                            @endif
-
-
-                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
-                        </ul>
+        
+        
+                                    <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
+                                </ul>
+                            </div>
+                        @else
+                        @endif
+        
+                        <button class="" id="btn-open-canvas" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                            <i class="fas fa-bars"></i>
+                        </button>
+        
                     </div>
-                @else
-                @endif
-
-                <button class="" id="btn-open-canvas" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                    <i class="fas fa-bars"></i>
-                </button>
-
+        
+        
+        
+                </div> 
             </div>
-
-
-
+            <div class="col-md-1"></div>
         </div>
+       
     </nav>
 
 
