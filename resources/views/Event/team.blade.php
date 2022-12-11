@@ -13,6 +13,14 @@
 </div>
 @endif
 
+@if (Session::get('error'))
+<div class="alert alert-danger alert-dismissable">
+    <strong class="hf">{{ Session::get('error') }}</strong>
+    <button type="button" style="float:right" class="btn-close" data-bs-dismiss="alert"
+        aria-label="Close"></button>
+</div>
+@endif
+
           
           <!-- Modal -->
           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -26,7 +34,10 @@
                
                 <div class="modal-body">
             <h6 class="hf">Enter TEAM name :</h6>
-            <input type="text" class="form-control" name="teamname" required>
+            <input type="text" class="form-control mb-2" name="teamname" required>
+
+            <h6 class="hf">Enter Maximum Participants :</h6>
+            <input type="number" class="form-control" name="max" value="3" required>
                 </div>
                 <div class="modal-footer">
               
@@ -59,8 +70,11 @@
                    
                     <div class="modal-body">
                 <h6 class="hf">TEAM Name :</h6>
-                <input type="text" value="{{$row->name}}" class="form-control" name="teamname" required>
+                <input type="text" value="{{$row->name}}" class="form-control mb-2" name="teamname" required>
                 <input type="hidden" value="{{$row->id}}" name="id">
+
+                <h6 class="hf">Enter Maximum Participants :</h6>
+                <input type="number" class="form-control" name="max" value="{{$row->maxcount}}" required>
                     </div>
                     <div class="modal-footer">
                   
@@ -79,6 +93,7 @@
                       
             </div>
             <div class="card-body">
+              <span style="font-size:13px;font-weight:bold">Maximum Number of Participants : {{$row->maxcount}}</span>
             <h6 class="hf">Members:</h6>
             <ul class="list-group list-group-flush">
                      

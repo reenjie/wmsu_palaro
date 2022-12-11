@@ -6,10 +6,10 @@
      <div class="card shadow-sm bg-transparent">
         <div class="card-body">
            <div class="container">
-            @if($available_slots>=1)
+            {{-- @if($available_slots>=1)
               <button class="btn btn-dark btn-sm px-4 mb-3" onclick="window.location.href='{{route('e.add_Participants')}}' ">Add</button>  
-            @endif
-
+            @endif --}}
+            <button class="btn btn-dark btn-sm px-4 mb-3" onclick="window.location.href='{{route('e.add_Participants')}}' ">Add</button>  
             
               <button class="btn btn-dark btn-sm px-4 mb-3" onclick="window.location.href='{{route('e.blacklist')}}' ">BLACKLIST</button>  
 

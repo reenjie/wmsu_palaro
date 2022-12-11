@@ -14,6 +14,7 @@ class Team extends Model
         'sports_id',
         'name', 
         'status',
+        'maxcount',
         'result',
     ];
 }

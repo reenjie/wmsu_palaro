@@ -499,7 +499,7 @@ $src =  asset('assets/img').'/'.$events->file;
   <div class="xscroll mb-4  "  style="width:100%;overflow-x:scroll;display:inline-flex;overflow-y:hidden">
     @foreach($coordinator as $row)   
   <div class="d-flex align-items-stretch" style="width: 300px;margin-left:10px;padding:10px">
-      <div class="card pic  bg-dark " style="background-color: rgba(224, 159, 17, 0.158);width:150px" >
+      <div class="card pic   " style="background-color: rgba(224, 159, 17, 0.158);width:150px" >
         <div class="card-body coordinators">
                    <img src="{{asset('assets/img/wmsu.jpg')}}"  class="rounded-circle" alt="">
                    <h6 class="hf text-danger">{{$row->name}}</h6>

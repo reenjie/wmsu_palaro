@@ -118,12 +118,14 @@ return view('Allevent',compact('sport','game','tally','team','user'));
 
 Route::get('/Tally',function(){
     $college = College::all();
+
+    
     return view('Tally',compact('college'));
 })->name('Tally');
 
 Auth::routes();
 
-
+Route::get('fetchtally', [App\Http\Controllers\ajax::class, 'fetchtally'])->name('fetchtally');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

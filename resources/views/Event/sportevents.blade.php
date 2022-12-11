@@ -63,7 +63,7 @@ $src =  asset('assets/img').'/'.$row->file;
 
                  <div class="row">
                      <div class="col-md-6">
-                            <h6 class="af ">Maximum number of Participants:</h6>
+                            <h6 class="af ">Maximum number of Team:</h6>
                             <input type="number" name="numofparticipants" class="form-control savetext mb-2  " style="font-size: 13px" value="{{$row->nop}}" min="3" data-id="{{$row->id}}" data-name="nop">           
                 </div>      
                 <div class="col-md-6">

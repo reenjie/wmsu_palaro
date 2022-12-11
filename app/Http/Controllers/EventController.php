@@ -312,7 +312,10 @@ public function update_coordinator(Request $request){
         $team = Team::where('sports_id',$sportsid)->get();
         $eventname = DB::select('select name,nop from sportevents where id ='.$sportsid.' ');
  
-        $numofparticipants = DB::select('select * from participants where sports_id ='.$sportsid.' and isverified=2');
+        // $numofparticipants = DB::select('select * from participants where sports_id ='.$sportsid.' and isverified=2');
+
+        
+        $numofparticipants = DB::select('select * from teams where id in (select team from participants where sports_id = '.$sportsid.' and isverified=2 )');
 
         foreach ($eventname as $key => $value) {
             $ename= $value->name;
@@ -375,36 +378,63 @@ public function update_coordinator(Request $request){
         $myevent = Sportevent::where('id',$sportsid)->get();
 
         $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
+
           $count=count($counting_participants);
+
           $college = College::all();
+
           $sportsdata = Sportevent::where('CollegeId',$collegeid)->get();
+
           $sportevent = Auth::user()->sports_id;
         
-          $data = DB::select('select * from users where id not in (select user_id from participants where sports_id='.$sportevent.' and team = null  ) and id not in (select user_id from blacklists where sports_id='.$sportevent.') and user_type="student" ');
+          $data = DB::select('select * from users where id not in (select user_id from participants where sports_id='.$sportevent.' and team != null or team != "" ) and id not in (select user_id from blacklists where sports_id='.$sportevent.' ) and user_type="student" ');
 
-          
         $selected = $request->input('selected_ids');
 
-       
         $eventname = DB::select('select name,nop from sportevents where id ='.$sportevent.'  ');
  
-        $numofparticipants = DB::select('select * from participants where sports_id ='.$sportevent.' and isverified = 2');
+        // $numofparticipants = DB::select('select * from participants where sports_id ='.$sportevent.' and isverified = 2');
 
+        $numofparticipants = DB::select('select * from teams where id in (select team from participants where sports_id = '.$sportevent.' and isverified = 2 )');
+
+
+        
         foreach ($eventname as $key => $value) {
             $ename= $value->name;
             $maxparticipants = $value->nop; 
            }
-           $allteam = Team::where('sports_id',$sportsid)->get();
+          
         
            $available_slots = $maxparticipants - count($numofparticipants);
-        
-           
+
+           if($available_slots >=1){
+            $allteam = Team::where('sports_id',$sportsid)->get();
+           }else {
+            $allteam = DB::select('select * from teams where id in (SELECT team FROM `participants` where sports_id='.$sportsid.')');
+           }
+         
             if($sportevent){
       
                 if($selected){
-                
+
+                   $userselection =  count($selected);
+                   $existingP = DB::select('select * from participants where team ='.$team.' and sports_id ='.$sportsid.' ');
+
+                   $totalEntry = count($existingP) + $userselection;
+
+                   $defaultcount = Team::findorFail($team)->maxcount;
+
+                    $teamname =Team::findorFail($team)->name;
+                   /* Check if the team matches the maximum participant counts */
+                    echo $defaultcount.' => '.$totalEntry;
+                   if($totalEntry > $defaultcount){
+                    //maximum limit reached
+                    echo 'Maximum limit reached';
+                    return redirect()->back()->with('error','Maximum limit has been reached. Team :'.$teamname.' | Maximum Participants Allowed : '.$defaultcount.' | Existing Participants and Selection Total : '.$totalEntry);
+                   }else if($totalEntry <= $defaultcount){
+
                     foreach ($selected as $key => $value) {
-                       
+                      
                         //Validate first.  if user already exist in a team
                        $validating =  Participant::where('user_id',$value)->where('team',null)->where('sports_id',$sportevent)->get();
 
@@ -432,6 +462,10 @@ public function update_coordinator(Request $request){
         
                         }
                       return redirect()->route('e.participants')->with('Success','Participants Added Successfully!');  
+
+                   }
+                
+            
                    }else {
               
          return view('Event.action.add_participants',compact('data','college','count','sportevent','ename','available_slots','myevent','allteam'));
@@ -655,6 +689,7 @@ public function update_coordinator(Request $request){
             'sports_id'=>$sportsid,
             'name'=>$request->input('teamname'),
             'status'=>0,
+            'maxcount'=>$request->input('max'),
             'result'=>0,
         ]);
         
@@ -665,13 +700,29 @@ public function update_coordinator(Request $request){
     public function move(Request $request){
         $moveto = $request->moveto;
         $id =$request->id;
-        
+        $sportevent = Auth::user()->sports_id;
+
+        $existingP = DB::select('select * from participants where team ='.$moveto.' and sports_id ='.$sportevent.' ');
+
+        $defaultcount = Team::findorFail($moveto)->maxcount;
+        $totalEntry = count($existingP) + 1;
+       
+        if($totalEntry <= $defaultcount){
+            //echo 'can add';
 
         Participant::where('id',$id)->update([
             'team'=>$moveto,
         ]);
 
         return redirect(route('e.team'))->with('Success','Moved Successfully!');
+        }else if($totalEntry > $defaultcount){
+           // echo 'false';
+
+       return redirect(route('e.team'))->with('error','Moving Failed. Maximum limit has been reached!');
+        }
+
+    
+        // 
     }
 
     public function deleteteam(Request $request){
@@ -877,6 +928,7 @@ public function update_coordinator(Request $request){
         $team = $request->input('teamname');
         Team::where('id',$id)->update([
             'name'=>$team,
+            'maxcount'=>$request->input('max'),
         ]);
 
         return redirect()->back()->with('Success','Team Name Updated Successfully!');

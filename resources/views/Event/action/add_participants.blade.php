@@ -11,7 +11,7 @@
             <h6 class="hf " style="font-size:13px">Select Participants for ( <span style="font-size:15px" class="text-danger">{{$ename}}</span> )</h6>
             
             <br>
-            <h6 class="hf">Available Slots : <span class="text-primary">{{$available_slots}}</span> 
+            <h6 class="hf">Available Team Slots : <span class="text-primary">{{$available_slots}}</span> 
             <br>
             Selected Participants : <span class="text-danger" id="selectedp"></span>
             </h6>
@@ -31,6 +31,14 @@
                                         </select>
                                     </div>
                                   </div>
+                            @if(session()->has('error'))
+                                
+
+                                  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="font-size:13px">
+                                     {{session()->get('error')}}.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                  </div>
+                            @endif
                     <div class="table-responsive">
             
             
@@ -89,7 +97,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <button type="submit" id="btnadd" disabled class="btn btn-dark btn-sm px-5">Add</button>
+                    <button type="submit" id="btnadd"  class="btn btn-dark btn-sm px-5">Add</button>
                   
                         </form>
                     <br>
@@ -110,27 +118,27 @@
     $('#selectedp').text(def);
 
             $('.check').change(function() {
-                $('#btnadd').removeAttr('disabled',true);
-                $('.clean').removeClass('table-danger');
-                $('#errortext').html('');
-                var id = $(this).data('id');
-                $('#'+id).removeClass('table-danger');
-             var len =  $('input[name="selected_ids[]"]:checked').length;
-             $('#selectedp').text(len);
-                if(len > {{$available_slots}} )
-                {
-                    $(this).prop('checked',false);
-                    $('#'+id).addClass('table-danger');
-                    $('#selectedp').text(len-1);
-                    $('#btnadd').removeAttr('disabled',true);
-                }else if( len < {{$available_slots}} ) {
+            //     $('#btnadd').removeAttr('disabled',true);
+            //     $('.clean').removeClass('table-danger');
+            //     $('#errortext').html('');
+            //     var id = $(this).data('id');
+            //     $('#'+id).removeClass('table-danger');
+            //  var len =  $('input[name="selected_ids[]"]:checked').length;
+            //  $('#selectedp').text(len);
+            //     if(len > {{$available_slots}} )
+            //     {
+            //         $(this).prop('checked',false);
+            //         $('#'+id).addClass('table-danger');
+            //         $('#selectedp').text(len-1);
+            //         $('#btnadd').removeAttr('disabled',true);
+            //     }else if( len < {{$available_slots}} ) {
                 
-                    $('#btnadd').removeAttr('disabled',true);
-                }
+            //         $('#btnadd').removeAttr('disabled',true);
+            //     }
 
-                if(len == 0){
-                    $('#btnadd').attr('disabled',true);
-                }
+            //     if(len == 0){
+            //         $('#btnadd').attr('disabled',true);
+            //     }
 
               
             })

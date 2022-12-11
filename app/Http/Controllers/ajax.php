@@ -54,4 +54,12 @@ class ajax extends Controller
 
 
    }
+
+   
+   public function fetchtally(Request $request){
+    $types = $request->types;
+   
+    $college = College::all();
+    return view('fetchtally',compact('college','types'));
+}
 }
