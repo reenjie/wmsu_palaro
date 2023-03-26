@@ -112,7 +112,7 @@ Route::get('allevents',function(){
     $team = Team::all();
     $user = User::all();
   
-return view('Allevent',compact('sport','game','tally','team','user'));
+return view('allevent',compact('sport','game','tally','team','user'));
 })->name('allevents');
 
 
@@ -215,7 +215,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function()
 
 
 /* Coordinator */
-Route::controller(App\Http\Controllers\CoordinatorController::class)->group(function(){
+Route::controller(App\Http\Controllers\CoordinatorCOntroller::class)->group(function(){
     Route::prefix('Coordinator')->name('coordinator.')->group(function(){ 
         Route::get('MyProfile','Profile')->name('profile');
         Route::get('update-account/{id}/{name}','updatecoordinator');

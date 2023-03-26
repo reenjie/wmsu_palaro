@@ -134,7 +134,7 @@ class AdminController extends Controller
     
     public function updatecollege($id){
        $data= College::where('id',$id)->get();
-       return view('admin.action.edit_college',compact('data'));
+       return view('Admin.action.edit_college',compact('data'));
     }
 
     public function add_College(Request $request){
@@ -355,7 +355,7 @@ public function updatecoordinator($id,$name){
   
    
 
-    return view('admin.action.edit',compact('data','name','college','default_college'));
+    return view('Admin.action.edit',compact('data','name','college','default_college'));
 }
 
 

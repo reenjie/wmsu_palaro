@@ -74,7 +74,7 @@ public function update_coordinator(Request $request){
     }
 
     if($usertype =='student'){
-        return redirect(route('admin.students'))->with('Success','Account Updated Successfully!');
+        return redirect(route('Admin.students'))->with('Success','Account Updated Successfully!');
     
     }else if($usertype =='coordinator'){
     

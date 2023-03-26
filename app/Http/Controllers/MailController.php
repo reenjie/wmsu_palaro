@@ -125,7 +125,7 @@ class MailController extends Controller
                    return redirect()->back()->with('error', 'Unable to send email.');
                }
            } catch(Exception $e) {
-               return redirect()->back()->with('error', 'Exception: ' . $e->getMessage());
+               return redirect()->back()->with('error', 'Sending Failed: You have entered an invalid email ');
            }
         }else {
             return redirect()->back()->with('error',$receiver.' is not registered in our database');

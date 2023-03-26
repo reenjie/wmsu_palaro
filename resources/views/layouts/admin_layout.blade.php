@@ -49,7 +49,7 @@
 
 </head>
 
-<body style="">
+<body style="overflow-y:scroll">
 
     <div id="app">
         <nav class="sidenav shadow" id="navitems">

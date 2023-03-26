@@ -9,10 +9,10 @@
 
     <title>WMSU-PALARO</title>
 
-    <link rel="stylesheet" href="{{asset('css/admin.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin.css')}}?v=1">
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     <link rel="stylesheet" href="{{asset('css/mobile.css')}}">
-    <link rel="stylesheet" href="{{asset('css/auth.css')}}">
+    <link rel="stylesheet" href="{{asset('css/auth.css')}}?v=1">
 
 
 
@@ -104,7 +104,7 @@
         
         <main class="py-4">
             <h6 class="hf" id="copyrights">CopyRights &middot; 2022 | WMSU-PALARO</h6>  
-            <a href="/" id="homelink" class="hf">Home</a>
+            <a href="/" id="homelink" class="hf btn btn-dark btn-sm text-light ">Home</a>
         </main>
     </div>
 </body>

@@ -26,7 +26,7 @@
                         <div class="col-md-4">
                             <div class="card shadow-sm mb-2">
 
-                                <img src="{{ asset('assets/img').'/'.$row->images }}"
+                                <img src="{{ asset('public/assets/img').'/'.$row->images }}"
                                     class="card-img-top" alt="" style="height: 200px">
                                 <div class="card-body">
                                     @if($row->isactive == 1)

@@ -30,7 +30,16 @@
                                    <div class="col-md-4">
                                      <div class="card shadow-sm mb-2" >
                                                
-                                                 <img src="{{asset('assets/img').'/'.$row->images}}" class="card-img-top" alt="" style="height: 200px">
+                                                
+                                                @if(file_exists(public_path().'/assets/img/'.$row->images))
+                                            
+                                                <img src="{{asset('public/assets/img').'/'.$row->images}}" class="card-img-top" alt="" style="height: 200px">
+                                                     
+                                                    @else
+                                                      
+                                                     <img src="{{asset('assets/img').'/'.$row->images}}" class="card-img-top" alt="" style="height: 200px">
+                                                @endif
+                                               
                                                  <div class="card-body">
                                                    
                                                    <a href="#"

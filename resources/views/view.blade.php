@@ -9,8 +9,29 @@
                 $src = '';
                 if ($events->file == '') {
                     $src = asset('assets/img/wmsu.jpg');
+                        
+                                     if(file_exists(public_path().'/assets/img/wmsu.jpg')){
+                                                
+                                                $src = asset('public/assets/img/wmsu.jpg');
+                                             
+                                                     
+                                                    }else{
+                                                  
+                                                     $src = asset('assets/img').'/'.$events->file;
+                                                }
+                    
                 } else {
-                    $src = asset('assets/img') . '/' . $events->file;
+                
+                  if(file_exists(public_path().'/assets/img/'.$events->file)){
+                                                
+                                                $src = asset('public/assets/img/'. $events->file);
+                                             
+                                                     
+                                                    }else{
+                                                  
+                                                 $src = asset('assets/img').'/'.$events->file;
+                     }
+                   
                 }
                 
             @endphp
@@ -124,12 +145,12 @@
          @foreach ($carousel as $row )
         @if($row->isactive == 1)
          <div class="carousel-item active ">
-           <img src="{{asset('assets/img').'/'.$row->images}}"  style="height: 400px"
+           <img src="{{asset('public/assets/img').'/'.$row->images}}"  style="height: 400px"
            class="d-block w-100" alt="...">
          </div>
          @else
          <div class="carousel-item">
-             <img src="{{asset('assets/img').'/'.$row->images}}"  style="height: 400px"
+             <img src="{{asset('public/assets/img').'/'.$row->images}}"  style="height: 400px"
              class="d-block w-100" alt="...">
            </div>
          @endif
