@@ -12,13 +12,14 @@ class Participant extends Model
     const UPDATED_AT = false;
 
     protected $fillable = [
-       'sports_id',
-       'user_id',
-       'CollegeId',
-       'date_added',
-       'submitted_req',
-       'isverified',
-       'team',
-       'status',
+        'sports_id',
+        'user_id',
+        'CollegeId',
+        'date_added',
+        'submitted_req',
+        'isverified',
+        'team',
+        'status',
+        'batch'
     ];
 }

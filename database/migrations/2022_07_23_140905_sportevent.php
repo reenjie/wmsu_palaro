@@ -16,7 +16,7 @@ return new class extends Migration
         //
         Schema::create('sportevents', function (Blueprint $table) {
             $table->id();
-            $table->text('name');     
+            $table->text('name');
             $table->date('datestart')->nullable();
             $table->date('dateend')->nullable();
             $table->time('timestart')->nullable();
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->integer('CollegeId');
             $table->text('istype')->nullable();
             $table->datetime('date_added');
+            $table->integer('batch');
         });
     }
 

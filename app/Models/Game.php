@@ -11,8 +11,9 @@ class Game extends Model
     public $timestamps = false;
     const UPDATED_AT = false;
     protected $fillable = [
-        'name', 
+        'name',
         'sports_id',
         'status',
+        'batch'
     ];
 }

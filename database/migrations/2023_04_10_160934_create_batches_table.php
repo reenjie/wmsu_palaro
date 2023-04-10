@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('carousels', function (Blueprint $table) {
+        Schema::create('batches', function (Blueprint $table) {
             $table->id();
-            $table->string('images')->unique();
-            $table->integer('priority');
-            $table->integer('sports_id')->nullable();
-            $table->integer('isactive')->nullable();
-            $table->datetime('date_added');
-            $table->integer('batch');
+            $table->string('title');
+            $table->integer('status')->comment('0-inactive,1-active');
+            $table->timestamps();
         });
     }
 
@@ -32,7 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
-        Schema::dropIfExists('carousels');
+        Schema::dropIfExists('batches');
     }
 };

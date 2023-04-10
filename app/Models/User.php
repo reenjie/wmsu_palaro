@@ -29,6 +29,7 @@ class User extends Authenticatable
         'fl',
         'sports_id',
         'date_register',
+        'batch'
     ];
 
     /**

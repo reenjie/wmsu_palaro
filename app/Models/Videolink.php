@@ -18,5 +18,6 @@ class Videolink extends Model
         'event',
         'CollegeId',
         'date_added',
+        'batch'
     ];
 }

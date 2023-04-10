@@ -11,10 +11,11 @@ class Announcement extends Model
     public $timestamps = false;
     const UPDATED_AT = false;
 
-    protected $fillable = [     
+    protected $fillable = [
         'announcement',
         'CollegeId',
         'date_added',
         'sports_id',
+        'batch'
     ];
 }

@@ -11,11 +11,12 @@ class Tally extends Model
     public $timestamps = false;
     const UPDATED_AT = false;
     protected $fillable = [
-        'team', 
+        'team',
         'sports_id',
         'user_id',
         'match_id',
         'isofficial',
         'tally',
+        'batch'
     ];
 }

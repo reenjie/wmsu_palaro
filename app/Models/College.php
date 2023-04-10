@@ -14,5 +14,6 @@ class College extends Model
     protected $fillable = [
         'name',
         'date_register',
+        'batch'
     ];
 }

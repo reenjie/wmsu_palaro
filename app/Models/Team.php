@@ -12,9 +12,10 @@ class Team extends Model
     const UPDATED_AT = false;
     protected $fillable = [
         'sports_id',
-        'name', 
+        'name',
         'status',
         'maxcount',
         'result',
+        'batch'
     ];
 }

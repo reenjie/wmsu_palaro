@@ -16,7 +16,7 @@ return new class extends Migration
         //
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
-            $table->integer('sports_id');     
+            $table->integer('sports_id');
             $table->integer('user_id');
             $table->integer('CollegeId');
             $table->datetime('date_added');
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('isverified');
             $table->integer('team')->nullable();
             $table->integer('status');
+            $table->integer('batch');
         });
     }
 

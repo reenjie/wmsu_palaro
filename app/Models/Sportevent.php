@@ -26,5 +26,6 @@ class Sportevent extends Model
         'CollegeId',
         'istype',
         'date_added',
+        'batch'
     ];
 }

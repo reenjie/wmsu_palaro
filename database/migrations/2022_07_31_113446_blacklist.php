@@ -16,10 +16,10 @@ return new class extends Migration
         //
         Schema::create('blacklists', function (Blueprint $table) {
             $table->id();
-            $table->integer('sports_id');     
+            $table->integer('sports_id');
             $table->integer('user_id');
             $table->integer('CollegeId');
-         
+            $table->integer('batch');
         });
     }
 

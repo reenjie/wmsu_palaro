@@ -17,9 +17,9 @@ return new class extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->integer('sports_id');
-            $table->text('name');  
+            $table->text('name');
             $table->integer('status');
-         
+            $table->integer('batch');
         });
     }
 

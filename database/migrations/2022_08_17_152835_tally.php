@@ -17,12 +17,12 @@ return new class extends Migration
         Schema::create('tallies', function (Blueprint $table) {
             $table->id();
             $table->integer('team')->nullable();
-            $table->integer('sports_id');   
+            $table->integer('sports_id');
             $table->integer('user_id')->nullable();
-            $table->integer('match_id');   
-            $table->integer('isofficial');   
-            $table->text('tally'); 
-         
+            $table->integer('match_id');
+            $table->integer('isofficial');
+            $table->text('tally');
+            $table->integer('batch');
         });
     }
 

@@ -18,6 +18,6 @@ class Carousel extends Model
         'sports_id',
         'isactive',
         'date_added',
+        'batch'
     ];
-    
 }

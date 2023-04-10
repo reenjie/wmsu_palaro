@@ -17,11 +17,12 @@ return new class extends Migration
         Schema::create('videolinks', function (Blueprint $table) {
             $table->id();
             $table->text('video')->unique();
-            $table ->text('videotype');
-            $table-> integer('priority');
-            $table -> integer('event');
-            $table-> integer('CollegeId');
+            $table->text('videotype');
+            $table->integer('priority');
+            $table->integer('event');
+            $table->integer('CollegeId');
             $table->datetime('date_added');
+            $table->integer('batch');
         });
     }
 
