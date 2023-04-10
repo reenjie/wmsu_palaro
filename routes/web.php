@@ -45,12 +45,12 @@ Route::get('/', function () {
     session(['token' => '1//0eLcBmdoQpT4RCgYIARAAGA4SNwF-L9IrBUtf0UgqM_3w6wGXn4cc_S1YGL1qNhXdwzrpHsx21NBI7pwyVpbSfRIdtFwpm803PYY']);
 
 
-    $carousel = Carousel::where('sports_id', null)->get();
-    $videos = Videolink::all();
+    $carousel = Carousel::where('sports_id', null)->where('batch',$batchactive[0]->id)->get();
+    $videos = Videolink::where('batch',$batchactive[0]->id)->get();
     $count = 0;
-    $announcement = Announcement::orderBy('date_added', 'desc')->get();;
+    $announcement = Announcement::where('batch',$batchactive[0]->id)->orderBy('date_added', 'desc')->get();;
     $college = College::all();
-    $sport = Sportevent::all();
+    $sport = Sportevent::where('batch',$batchactive[0]->id)->get();
     $coordinator = User::where('user_type', 'coordinator')->get();
     $ecoordinator = User::where('user_type', 'ecoordinator')->get();
     try {
@@ -105,10 +105,10 @@ Route::get('changevideo', [App\Http\Controllers\ajax::class, 'change_video'])->n
 
 Route::get('allevents', function () {
 
-    $sport = DB::select("select * from sportevents where id in (select sports_id from games)"); /// To do ..
-    $game = Game::all();
-    $tally = Tally::all();
-    $team = Team::all();
+    $sport = DB::select("select * from sportevents where id in (select sports_id from games) and batch = ".session()->get('batch')." "); /// To do ..
+    $game = Game::where('batch',session()->get('batch'))->get();
+    $tally = Tally::where('batch',session()->get('batch'))->get();
+    $team = Team::where('batch',session()->get('batch'))->get();
     $user = User::all();
 
     return view('allevent', compact('sport', 'game', 'tally', 'team', 'user'));
