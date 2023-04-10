@@ -430,7 +430,7 @@ public function sportevents(){
     $user = User::where('CollegeId',$id)->where('user_type','student')->get(); 
 
     $count=count($participants);
-    $sportsdata = Sportevent::where('batch',session()->get('batch'));
+    $sportsdata = Sportevent::where('batch',session()->get('batch'))->get();
     //$count = count($sportsdata);
     $college = College::where('id',Auth::user()->CollegeId)->get();
     return view('Admin.sportevents',compact('college','sportsdata','count'));
