@@ -26,29 +26,30 @@ class AdminController extends Controller
 
     // dashboard
     public function dashboard(){
-
+    
+        
         $coordinator = User::where('user_type','coordinator')->get();
         $students = User::where('user_type','student')->get();
         $college = College::all();
         $user = User::all();
-        $sport = DB::select('select * from sportevents where id in (select sports_id from participants)');
+        $sport = DB::select('select * from sportevents where id in (select sports_id from participants) and batch = '.session()->get('batch').' ');
 
        
-        $participants = DB::select('select * from participants where sports_id in (select id from sportevents  )');
+        $participants = DB::select('select * from participants where sports_id in (select id from sportevents  ) and batch = '.session()->get('batch').' ');
         
-        $graph = DB::select('select (select count(sports_id) from participants where sports_id = sportevents.id ) as totalcount,id, name from sportevents where id  in (select sports_id from participants) ;');
+        $graph = DB::select('select (select count(sports_id) from participants where sports_id = sportevents.id ) as totalcount,id, name from sportevents where id  in (select sports_id from participants) and batch = '.session()->get('batch').' ;');
 
      
 
-        $collegewevent = DB::select('select * from colleges where id in (select CollegeId from participants)');
+        $collegewevent = DB::select('select * from colleges where id in (select CollegeId from participants)  ');
         return view('Admin.dashboard',compact('coordinator','students','college','user','sport','participants','collegewevent','graph'));
     }
 
     //Homepage 
     public function homepage(){
-        $data = Carousel::where('sports_id',null)->get();
+        $data = Carousel::where('sports_id',null)->where('batch',session()->get('batch'))->get();
         $count = count($data);
-        $videos = Videolink::all();
+        $videos = Videolink::where('batch',session()->get('batch'));
         return view('Admin.homepage',compact('data','count','videos'));
     }
 
@@ -68,6 +69,7 @@ class AdminController extends Controller
                 'images' => $imageName,
                 'priority' => 0,
                 'date_added' => now(),
+                'batch'=>session()->get('batch')
             ]);
     
           }
@@ -123,8 +125,8 @@ class AdminController extends Controller
 
     //colleges
     public function colleges(){
-        $wcoordinator = DB::select('select colleges.id,colleges.name,users.name as username,users.CollegeId,users.email from users inner join colleges on users.CollegeId = colleges.id and users.user_type="coordinator" ');
-        $nocoordinator = DB::select('select * from colleges where id not in (select CollegeId from users);');
+        $wcoordinator = DB::select('select colleges.id,colleges.name,users.name as username,users.CollegeId,users.email from users inner join colleges on users.CollegeId = colleges.id and users.user_type="coordinator"   ');
+        $nocoordinator = DB::select('select * from colleges where id not in (select CollegeId from users) ;');
         return view('Admin.colleges',compact('wcoordinator','nocoordinator'));
     }
 
@@ -133,7 +135,7 @@ class AdminController extends Controller
     }
     
     public function updatecollege($id){
-       $data= College::where('id',$id)->get();
+       $data= College::all();
        return view('Admin.action.edit_college',compact('data'));
     }
 
@@ -179,7 +181,7 @@ public function deletecollage($id){
     public function coordinators(){
         $data = User::all();
         $college = College::all();
-        $checking_availability = DB::select('select * from colleges where id not in (select CollegeId from users where user_type ="coordinator")');
+        $checking_availability = DB::select('select * from colleges where id not in (select CollegeId from users where user_type ="coordinator") and batch = '.session()->get('batch').' ');
         $count = count($checking_availability);
         return view('Admin.coordinator',compact('data','college','count'));
     }
@@ -189,15 +191,15 @@ public function deletecollage($id){
         $collegeid = Auth::user()->CollegeId;
         
         $user = User::where('user_type','ecoordinator')->get();
-        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get();  
+        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get();  
         $college = College::where('id',Auth::user()->CollegeId)->get();
-        $sport = Sportevent::all();
+        $sport = Sportevent::where('batch',session()->get('batch'));
        
         $count=count($participants);
 
-        $sportevent = Sportevent::all();
+        $sportevent = Sportevent::where('batch',session()->get('batch'));
 
-        $events = DB::select('select * from sportevents where id not in (select sports_id from users where CollegeId ='.$collegeid.' )');
+        $events = DB::select('select * from sportevents where id not in (select sports_id from users where CollegeId ='.$collegeid.' ) and batch = '.session()->get('batch').' ');
 
        return view('Admin.ecoordinators',compact('user','count','college','sport','events','sportevent'));
     }
@@ -206,8 +208,8 @@ public function deletecollage($id){
     public function add_ecoordinator(){
         $collegeid = Auth::user()->CollegeId;
         $college = College::where('id',Auth::user()->CollegeId)->get();
-        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get();  
-        $events = DB::select('select * from sportevents where id not in (select sports_id from users)');
+        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get();  
+        $events = DB::select('select * from sportevents where id not in (select sports_id from users) and batch ='.session()->get('batch').' ');
         $count=count($participants);
 
         return view('Admin.action.add_ecoordinator',compact('count','college','events'));
@@ -252,8 +254,8 @@ public function deletecollage($id){
         $userid = $request->id;
         $collegeid = Auth::user()->CollegeId;
         $college = College::where('id',Auth::user()->CollegeId)->get();
-        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get();  
-        $events = DB::select('select * from sportevents where id not in (select sports_id from users where CollegeId ='.$collegeid.' )');
+        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get();  
+        $events = DB::select('select * from sportevents where id not in (select sports_id from users where CollegeId ='.$collegeid.' ) and batch = '.session()->get('batch').' ');
         $count=count($participants);
         
         $data = User::where('id',$userid)->get();
@@ -284,18 +286,18 @@ public function deletecollage($id){
 
     public function students(){
         $data = User::all();
-        $college = College::all();
+        $college =College::all();
         return view('Admin.students',compact('data','college'));
     }
 
     public function add($name){
     switch ($name) {
         case 'student':
-            $data = College::all();
+            $data =College::all();
             break;
 
         case 'coordinator':
-            $data = DB::select('select * from colleges where id not in (select CollegeId from users  where user_type ="coordinator" )');  
+            $data = DB::select('select * from colleges where id not in (select CollegeId from users  where user_type ="coordinator" )  ');  
             break;
        
     }
@@ -343,10 +345,10 @@ public function updatecoordinator($id,$name){
 
     if($name == 'Student'){
         $college =  College::all();
-        $default_college =DB::select('select id,name from colleges where id in (select CollegeId from users where id = ? ) ',[$id]);
+        $default_college =DB::select('select id,name from colleges where id in (select CollegeId from users where id = ? )  ',[$id]);
 
     }else if ($name =='Coordinator'){
-        $college =  DB::select('select * from colleges where id not in (select CollegeId from users  where user_type ="coordinator" )');  
+        $college =  DB::select('select * from colleges where id not in (select CollegeId from users  where user_type ="coordinator" )  ');  
         $default_college =DB::select('select id,name from colleges where id in (select CollegeId from users where id = ? ) ',[$id]);
     }else{
         $college = '';
@@ -424,18 +426,18 @@ public function sportevents(){
     $id = Auth::user()->CollegeId;
    
    
-    $participants = Participant::where('CollegeId',$id)->where('isverified','0')->get();  
+    $participants = Participant::where('CollegeId',$id)->where('isverified','0')->where('batch',session()->get('batch'))->get();  
     $user = User::where('CollegeId',$id)->where('user_type','student')->get(); 
 
     $count=count($participants);
-    $sportsdata = Sportevent::all();
+    $sportsdata = Sportevent::where('batch',session()->get('batch'));
     //$count = count($sportsdata);
     $college = College::where('id',Auth::user()->CollegeId)->get();
     return view('Admin.sportevents',compact('college','sportsdata','count'));
 }
 
 public function delete_sportevents($id){
-    $filedata =  Sportevent::select('file')->where('id',$id)->get();
+    $filedata =  Sportevent::select('file')->where('id',$id)->where('batch',session()->get('batch'))->get();
  foreach ($filedata as $key => $value) {
    
     try {
@@ -449,10 +451,10 @@ Sportevent::where('id',$id)->delete();
 
 public function edit_sportevents($id){
     $collegeid = Auth::user()->CollegeId;
-    $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
+    $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get(); 
     $count=count($counting_participants);
   $college = College::where('id',Auth::user()->CollegeId)->get();
-   $data =  Sportevent::where('id',$id)->get();
+   $data =  Sportevent::where('id',$id)->where('batch',session()->get('batch'))->get();
   
     return view('Admin.action.edit_sports',compact('college','data','count'));
  
@@ -501,6 +503,7 @@ public function add_sports(Request $request){
         'CollegeId'=>0,
         'istype'=>$request->input('istype'),
         'date_added'=>now(),
+        'batch'=>session()->get('batch')
     ]);
 
     return redirect()->route('admin.sportevents')->with('Success','Sport/Events Added Successfully!');
@@ -509,7 +512,7 @@ public function add_sports(Request $request){
 
 public function add_sports_events(){
     $collegeid = Auth::user()->CollegeId;
-    $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
+    $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get(); 
     $count=count($counting_participants);
     $college = College::where('id',Auth::user()->CollegeId)->get();
     return view('Admin.action.add_sportsevent',compact('college','count'));
@@ -554,7 +557,7 @@ public function edit_sports(Request $request){
       if($imageName){
         $file = $imageName;
       }else{
-        $filedata =  Sportevent::select('file')->where('id',$id)->get();
+        $filedata =  Sportevent::select('file')->where('id',$id)->where('batch',session()->get('batch'))->get();
         foreach ($filedata as $key => $value) {
             
           

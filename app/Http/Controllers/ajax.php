@@ -27,7 +27,7 @@ class ajax extends Controller
         $eventid =  $request->id;
         try {
             $user = User::where('email', $email)->where('user_type', 'student')->get();
-            $sport = Sportevent::where('id', $eventid)->get();
+            $sport = Sportevent::where('id', $eventid)->where('batch',session()->get('batch'))->get();
 
             foreach ($sport as $row) {
                 $sports_col = $row->CollegeId;
@@ -51,7 +51,7 @@ class ajax extends Controller
     {
         $vlink =  $request->id;
 
-        $mlink = Videolink::where('id', $vlink)->get();
+        $mlink = Videolink::where('id', $vlink)->where('batch',session()->get('batch'))->get();
 
         foreach ($mlink as $row) {
             $link = $row->video;
@@ -71,7 +71,7 @@ class ajax extends Controller
         $types = $request->types;
 
         $college = College::all();
-        $sportevent = Sportevent::all();
+        $sportevent = Sportevent::where('batch',session()->get('batch'));
         return view('fetchtally', compact('college', 'types', 'sportevent'));
     }
 

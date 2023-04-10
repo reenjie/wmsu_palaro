@@ -103,9 +103,9 @@
               $batches = DB::select('select * from batches')
               @endphp
 
-              @foreach($batches as $row)
+              @foreach($batches as $key => $row)
               <tr class="@if($row->status == 1) table-success  @endif">
-                <th scope="row">1</th>
+                <th scope="row">{{$key+1}}</th>
                 <td>{{$row->title}}</td>
                 <td>{{date('h:i a F j,Y',strtotime($row->created_at))}}</td>
                 <td>

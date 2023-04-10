@@ -90,8 +90,8 @@ public function update_coordinator(Request $request){
     public function dashboard(){
         $id = Auth::user()->CollegeId;
         $userid = Auth::user()->id;
-        $announcement = Announcement::where('CollegeId',$id)->orderBy('date_added','desc')->get();
-        $sport = DB::select('select * from sportevents where id in (select sports_id from participants where user_id ='.$userid.' and isverified = 2 )');
+        $announcement = Announcement::where('CollegeId',$id)->where('batch',session()->get('batch'))->orderBy('date_added','desc')->get();
+        $sport = DB::select('select * from sportevents where id in (select sports_id from participants where user_id ='.$userid.' and isverified = 2  and batch ='.session()->get('batch').') and batch = '.session()->get('batch').' ');
 
         $events = Sportevent::all();
         return view('User.dashboard',compact('announcement','sport','events'));
@@ -100,12 +100,12 @@ public function update_coordinator(Request $request){
     public function join(){
         $collegeid = Auth::user()->CollegeId;
         $userid = Auth::user()->id;
-        $blacklist =DB::select('select * from sportevents where CollegeId = '.$collegeid.' and id  in (select sports_id from blacklists where user_id ='.$userid.' ) ');
-        $event = DB::select('select * from sportevents where  id not in (select sports_id from blacklists where user_id ='.$userid.' ) and id not in (select sports_id from participants where user_id = '.$userid.' ) ');
+        $blacklist =DB::select('select * from sportevents where batch= '.session()->get('batch').' and CollegeId = '.$collegeid.' and id  in (select sports_id from blacklists where user_id ='.$userid.' and batch ='.session()->get('batch').' ) ');
+        $event = DB::select('select * from sportevents where batch ='.session()->get('batch').' and   id not in (select sports_id from blacklists where user_id ='.$userid.' and batch = '.session()->get('batch').' ) and id not in (select sports_id from participants where user_id = '.$userid.' and batch= '.session()->get('batch').') ');
 
-        $joinedevent = DB::select('select * from sportevents where id in (select sports_id from participants where user_id = '.$userid.' and isverified in (0,1,2) ) ');
+        $joinedevent = DB::select('select * from sportevents where batch ='.session()->get('batch').' and id in (select sports_id from participants where user_id = '.$userid.' and isverified in (0,1,2) and batch ='.session()->get('batch').' ) ');
 
-        $isverified = DB::select('select * from participants where user_id = '.$userid.' and isverified in (0,1,2) ');
+        $isverified = DB::select('select * from participants where user_id = '.$userid.' and isverified in (0,1,2) and batch ='.session()->get('batch').' ');
 
         return view('User.join',compact('event','blacklist','joinedevent','isverified'));
     }
@@ -144,6 +144,7 @@ public function update_coordinator(Request $request){
            'submitted_req'=>$allfiles,
            'isverified'=>0,
            'status'=>0,
+           'batch'=>session()->get('batch')
                     ]);  
     
            
@@ -179,8 +180,8 @@ public function update_coordinator(Request $request){
     }
 
     public function stream(){
-        $videos = Videolink::all();
-        $sport = Sportevent::all();
+        $videos = Videolink::where('batch',session()->get('batch'))->get();
+        $sport = Sportevent::where('batch',session()->get('batch'))->get();
         $college= College::all();
         return view('User.stream',compact('videos','sport','college'));
     }

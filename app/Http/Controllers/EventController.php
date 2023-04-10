@@ -23,13 +23,13 @@ class EventController extends Controller
     public function Profile(){
         $sportsid = Auth::user()->sports_id;
      //  
-        $myevent = Sportevent::where('id',$sportsid)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
         $college = College::all();
 
-          $eventname = DB::select('select name,nop from sportevents where id ='.$sportsid.'  ');
+          $eventname = DB::select('select name,nop from sportevents where id ='.$sportsid.' and batch ='.session()->get('batch').'  ');
  
         $collegeid = Auth::user()->CollegeId;
-        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get();  
+        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get();  
         $college = College::where('id',Auth::user()->CollegeId)->get();
         $count=count($participants);
         return view('Event.profile',compact('count','college','myevent'));
@@ -38,19 +38,19 @@ class EventController extends Controller
     public function updatecoordinator($id,$name){
         $sportsid = Auth::user()->sports_id;
      //  
-        $myevent = Sportevent::where('id',$sportsid)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
         $college = College::all();
 
-          $eventname = DB::select('select name,nop from sportevents where id ='.$sportsid.'  ');
+          $eventname = DB::select('select name,nop from sportevents where id ='.$sportsid.'  and batch = '.session()->get('batch').' ');
  
         $data = User::where('id',$id)->get();
     
         if($name == 'Student'){
             $college =  College::all();
-            $default_college =DB::select('select id,name from colleges where id in (select CollegeId from users where id = ? ) ',[$id]);
+            $default_college =DB::select('select id,name from colleges where id in (select CollegeId from users where id = ? )  ',[$id]);
     
         }else if ($name =='Coordinator'){
-            $college =  DB::select('select * from colleges where id not in (select CollegeId from users  where user_type ="coordinator" )');  
+            $college =  DB::select('select * from colleges where id not in (select CollegeId from users  where user_type ="coordinator" ) ');  
             $default_college =DB::select('select id,name from colleges where id in (select CollegeId from users where id = ? ) ',[$id]);
         }else{
             $college = '';
@@ -58,7 +58,7 @@ class EventController extends Controller
         }
       
         $collegeid = Auth::user()->CollegeId;
-        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get();  
+        $participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get();  
         $college = College::where('id',Auth::user()->CollegeId)->get();
         $count=count($participants);
     
@@ -109,12 +109,12 @@ public function update_coordinator(Request $request){
     public function dashboard(){
         $sportsid = Auth::user()->sports_id;
      //  
-        $myevent = Sportevent::where('id',$sportsid)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
         $college = College::all();
 
-          $eventname = DB::select('select name,nop from sportevents where id ='.$sportsid.'  ');
+          $eventname = DB::select('select name,nop from sportevents where id ='.$sportsid.'  and batch = '.session()->get('batch').' ');
  
-        $numofparticipants = DB::select('select * from participants where sports_id ='.$sportsid.' and isverified = 2');
+        $numofparticipants = DB::select('select * from participants where sports_id ='.$sportsid.' and isverified = 2 and batch ='.session()->get('batch').'');
 
         foreach ($eventname as $key => $value) {
             $ename= $value->name;
@@ -129,15 +129,15 @@ public function update_coordinator(Request $request){
         $coordinator = User::where('user_type','ecoordinator')->get();
      /*    $students = User::where('user_type','student')->where('CollegeId',$collegeid)->get();
      */
-        $sport = Sportevent::where('id',$sportsid)->get();
-        $allparticipants = DB::select('select * from users where id in (select user_id from participants where  sports_id ='.$sportsid.')');
+        $sport = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
+        $allparticipants = DB::select('select * from users where id in (select user_id from participants where  sports_id ='.$sportsid.' and batch ='.session()->get('batch').')');
 
-        $nop = DB::select('select sports_id,COUNT(sports_id) as nop from participants group by sports_id');
+        $nop = DB::select('select sports_id,COUNT(sports_id) as nop from participants where batch ='.session()->get('batch').'  group by sports_id ');
 
-        $collegewevent = DB::select('select * from colleges where id in (select CollegeId from participants)');
+        $collegewevent = DB::select('select * from colleges where id in (select CollegeId from participants) ');
 
           
-        $participants =  DB::select('select * from participants where sports_id = '.$sportsid.' and isverified in (0,1);');
+        $participants =  DB::select('select * from participants where sports_id = '.$sportsid.' and isverified in (0,1) and batch ='.session()->get('batch').';');
        
 
         $user = User::where('user_type','student')->get(); 
@@ -153,14 +153,14 @@ public function update_coordinator(Request $request){
         
        
          */
-        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->get();
+        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->where('batch',session()->get('batch'))->get();
         $count=count($kunta);
-        $sportevent= Sportevent::where('id',$sportsid)->get(); 
+        $sportevent= Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get(); 
 
 
      
 
-        $team = Team::where('sports_id',$sportsid)->get();
+        $team = Team::where('sports_id',$sportsid)->where('batch',session()->get('batch'))->get();
 
       return view('Event.dashboard',compact('myevent','coordinator','sport','allparticipants','nop','participants','user','college','sportevent','count','available_slots','team'));
     }
@@ -169,15 +169,15 @@ public function update_coordinator(Request $request){
         $sportsid = Auth::user()->sports_id;
         $collegeid = Auth::user()->CollegeId;
         $college = College::where('id',Auth::user()->CollegeId)->get();
-        $myevent = Sportevent::where('id',$sportsid)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
 
 
       
         $user = User::where('CollegeId',$collegeid)->where('user_type','student')->get(); 
 
-        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->get();
+        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->where('batch',session()->get('batch'))->get();
         $count=count($kunta);
-        $announcement = Announcement::where('sports_id',$sportsid)->get()->SortByDesc('date_added');
+        $announcement = Announcement::where('sports_id',$sportsid)->where('batch',session()->get('batch'))->get()->SortByDesc('date_added');
         $counts = count($announcement);
         $college = College::where('id',Auth::user()->CollegeId)->get();
         return view('Event.announcement',compact('college','announcement','count','counts','myevent','college'));
@@ -191,6 +191,7 @@ public function update_coordinator(Request $request){
          'CollegeId' => Auth::user()->CollegeId,
          'sports_id'=>Auth::user()->sports_id,
          'date_added' => now(),
+         'batch'=>session()->get('batch')
         ]);
  
         return redirect()->back()->with('Success','Announcement Posted Successfully!');
@@ -215,16 +216,16 @@ public function update_coordinator(Request $request){
         $sportsid = Auth::user()->sports_id;
         $collegeid = Auth::user()->CollegeId;
         $college = College::where('id',Auth::user()->CollegeId)->get();
-        $myevent = Sportevent::where('id',$sportsid)->get();
-        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
+        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->batch('batch',session()->get('batch'))->get();
         $count=count($kunta);
-        $videos = Videolink::where('event',$sportsid)->get();
+        $videos = Videolink::where('event',$sportsid)->where('batch',session()->get('batch'))->get();
         return view('Event.media',compact('videos','college','myevent','count'));
     }
 
     public function savelink(Request $request){
 
-        $check = Videolink::where('event',Auth::user()->sports_id)->get();
+        $check = Videolink::where('event',Auth::user()->sports_id)->where('batch',session()->get('batch'))->get();
 
         if(count($check)>=1){
             Videolink::where('event',Auth::user()->sports_id)->update([
@@ -240,6 +241,7 @@ public function update_coordinator(Request $request){
             'event' =>Auth::user()->sports_id,
             'CollegeId'=> Auth::user()->CollegeId,
             'date_added'=>now(),
+            'batch'=>session()->get('batch')
           ]);
         }
     
@@ -250,8 +252,8 @@ public function update_coordinator(Request $request){
         $sportsid = Auth::user()->sports_id;
         $collegeid = Auth::user()->CollegeId;
         $college = College::where('id',Auth::user()->CollegeId)->get();
-        $myevent = Sportevent::where('id',$sportsid)->get();
-        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
+        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->where('batch',session()->get('batch'))->get();
         $count=count($kunta);
 
         return view('Event.sportevents',compact('college','myevent','count'));
@@ -301,21 +303,21 @@ public function update_coordinator(Request $request){
     public function participants(){
         $sportsid = Auth::user()->sports_id;
         $collegeid = Auth::user()->CollegeId;
-        $college = College::all();
-        $myevent = Sportevent::where('id',$sportsid)->get();
-        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('sports_id',$sportsid)->get(); 
+        $college =College::all();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
+        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('sports_id',$sportsid)->where('batch',session()->get('batch'))->get(); 
        
-        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->get();
+        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->where('batch',session()->get('batch'))->get();
         $count=count($kunta);
 
 
-        $team = Team::where('sports_id',$sportsid)->get();
-        $eventname = DB::select('select name,nop from sportevents where id ='.$sportsid.' ');
+        $team = Team::where('sports_id',$sportsid)->where('batch',session()->get('batch'))->get();
+        $eventname = DB::select('select name,nop from sportevents where id ='.$sportsid.'  and batch='.session()->get('batch').' ');
  
         // $numofparticipants = DB::select('select * from participants where sports_id ='.$sportsid.' and isverified=2');
 
         
-        $numofparticipants = DB::select('select * from teams where id in (select team from participants where sports_id = '.$sportsid.' and isverified=2 )');
+        $numofparticipants = DB::select('select * from teams where id in (select team from participants where sports_id = '.$sportsid.' and isverified=2 and batch ='.session()->get('batch').' ) and batch = '.session()->get('batch').'');
 
         foreach ($eventname as $key => $value) {
             $ename= $value->name;
@@ -324,12 +326,12 @@ public function update_coordinator(Request $request){
     
            $available_slots = $maxparticipants - count($numofparticipants);
           
-        $participants = Participant::where('sports_id',$sportsid)->get(); 
+        $participants = Participant::where('sports_id',$sportsid)->where('batch',session()->get('batch'))->get(); 
 
-        $sportevent= Sportevent::where('CollegeId',$collegeid)->get(); 
+        $sportevent= Sportevent::where('CollegeId',$collegeid)->where('batch',session()->get('batch'))->get(); 
        
        
-        $user =DB::select('select * from users where id in (select user_id from participants where  isverified = 2 and sports_id ='.$sportsid.' )  '); 
+        $user =DB::select('select * from users where id in (select user_id from participants where  isverified = 2 and sports_id ='.$sportsid.' and batch = '.session()->get('batch').' )  '); 
         $allteam = Team::where('sports_id',$sportsid)->get();
         return view('Event.participants',compact('college','myevent','count','user','participants','sportevent','available_slots','team','allteam'));
     }
@@ -375,27 +377,27 @@ public function update_coordinator(Request $request){
         $collegeid = Auth::user()->CollegeId;
         $sportsid = Auth::user()->sports_id;
         $team = $request->input('team');
-        $myevent = Sportevent::where('id',$sportsid)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
 
-        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
+        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get(); 
 
           $count=count($counting_participants);
 
           $college = College::all();
 
-          $sportsdata = Sportevent::where('CollegeId',$collegeid)->get();
+          $sportsdata = Sportevent::where('CollegeId',$collegeid)->where('batch',session()->get('batch'))->get();
 
           $sportevent = Auth::user()->sports_id;
         
-          $data = DB::select('select * from users where id not in (select user_id from participants where sports_id='.$sportevent.' and team != null or team != "" ) and id not in (select user_id from blacklists where sports_id='.$sportevent.' ) and user_type="student" ');
+          $data = DB::select('select * from users where id not in (select user_id from participants where sports_id='.$sportevent.' and team != null or team != ""  and batch ='.session()->get('batch').') and id not in (select user_id from blacklists where sports_id='.$sportevent.' and batch ='.session()->get('batch').' ) and user_type="student" ');
 
         $selected = $request->input('selected_ids');
 
-        $eventname = DB::select('select name,nop from sportevents where id ='.$sportevent.'  ');
+        $eventname = DB::select('select name,nop from sportevents where id ='.$sportevent.' and batch ='.session()->get('batch').'  ');
  
         // $numofparticipants = DB::select('select * from participants where sports_id ='.$sportevent.' and isverified = 2');
 
-        $numofparticipants = DB::select('select * from teams where id in (select team from participants where sports_id = '.$sportevent.' and isverified = 2 )');
+        $numofparticipants = DB::select('select * from teams where batch ='.session()->get('batch').' and  id in (select team from participants where sports_id = '.$sportevent.' and isverified = 2  and batch ='.session()->get('batch').')');
 
 
         
@@ -408,9 +410,9 @@ public function update_coordinator(Request $request){
            $available_slots = $maxparticipants - count($numofparticipants);
 
            if($available_slots >=1){
-            $allteam = Team::where('sports_id',$sportsid)->get();
+            $allteam = Team::where('sports_id',$sportsid)->where('batch',session()->get('batch'))->get();
            }else {
-            $allteam = DB::select('select * from teams where id in (SELECT team FROM `participants` where sports_id='.$sportsid.')');
+            $allteam = DB::select('select * from teams where id in (SELECT team FROM `participants` where sports_id='.$sportsid.' and batch ='.session()->get('batch').') and batch ='.session()->get('batch').'');
            }
          
             if($sportevent){
@@ -418,7 +420,7 @@ public function update_coordinator(Request $request){
                 if($selected){
 
                    $userselection =  count($selected);
-                   $existingP = DB::select('select * from participants where team ='.$team.' and sports_id ='.$sportsid.' ');
+                   $existingP = DB::select('select * from participants where team ='.$team.' and sports_id ='.$sportsid.' and batch ='.session()->get('batch').' ');
 
                    $totalEntry = count($existingP) + $userselection;
 
@@ -436,7 +438,7 @@ public function update_coordinator(Request $request){
                     foreach ($selected as $key => $value) {
                       
                         //Validate first.  if user already exist in a team
-                       $validating =  Participant::where('user_id',$value)->where('team',null)->where('sports_id',$sportevent)->get();
+                       $validating =  Participant::where('user_id',$value)->where('team',null)->where('sports_id',$sportevent)->where('batch',session()->get('batch'))->get();
 
                        if(count($validating) >= 1){
                     
@@ -454,6 +456,7 @@ public function update_coordinator(Request $request){
                'isverified'=>2,
                'team'=>$team,
                'status'=>0,
+               'batch'=>session()->get('batch')
                         ]); 
                        }
 
@@ -486,7 +489,7 @@ public function update_coordinator(Request $request){
 
     public function blacklist(){
         $collegeid = Auth::user()->CollegeId;
-        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
+        $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get(); 
         $count=count($counting_participants);
         $college = College::where('id',Auth::user()->CollegeId)->get();
         $data = User::all();
@@ -495,23 +498,23 @@ public function update_coordinator(Request $request){
      
 
       
-        $myevent = Sportevent::where('id',$sportsid)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
 
 
-        $blacklisted = Blacklist::where('CollegeId',$collegeid)->get();
+        $blacklisted = Blacklist::where('CollegeId',$collegeid)->where('batch',session()->get('batch'))->get();
 
         return view('Event.blacklist',compact('college','count','data','blacklisted','myevent'));
     }
 
     public function addblacklist($id,$name){
         $sportsid = Auth::user()->sports_id;
-        $myevent = Sportevent::where('id',$sportsid)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
         $collegeid = Auth::user()->CollegeId;
 
-          $data = DB::select('select * from users where id not in (select user_id from blacklists where sports_id ='.$id.') and id not in (select user_id from participants where sports_id ='.$id.')  ');
+          $data = DB::select('select * from users where id not in (select user_id from blacklists where sports_id ='.$id.' and batch ='.session()->get('batch').') and id not in (select user_id from participants where sports_id ='.$id.' and batch ='.session()->get('batch').')  ');
 
-          $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->get(); 
-          $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->get();
+          $counting_participants = Participant::where('CollegeId',$collegeid)->where('isverified','0')->where('batch',session()->get('batch'))->get(); 
+          $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->where('batch',session()->get('batch'))->get();
         $count=count($kunta);
           $college = College::all();
   
@@ -535,6 +538,7 @@ public function update_coordinator(Request $request){
             'sports_id'=>$event,
             'user_id'=>$value,
             'CollegeId'=>$collegeid,
+            'batch'=>session()->get('batch')
           ]);
         }
        
@@ -555,10 +559,10 @@ public function update_coordinator(Request $request){
         $sportsid = Auth::user()->sports_id;
         $collegeid = Auth::user()->CollegeId;
         $college = College::where('id',Auth::user()->CollegeId)->get();
-        $myevent = Sportevent::where('id',$sportsid)->get();
-        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->get();
+        $myevent = Sportevent::where('id',$sportsid)->where('batch',session()->get('batch'))->get();
+        $kunta = Participant::where('sports_id',$sportsid)->where('isverified',1)->where('batch',session()->get('batch'))->get();
         $count=count($kunta);
-        $data = Carousel::where('sports_id',$sportsid)->get();
+        $data = Carousel::where('sports_id',$sportsid)->where('batch',session()->get('batch'))->get();
 
         return view('Event.homepage',compact('myevent','college','data','count'));
     }
@@ -594,6 +598,7 @@ public function update_coordinator(Request $request){
                     'sports_id'=> $sportsid,
                     'isactive'=>1,
                     'date_added' => now(),
+                    'batch'=>session()->get('batch')
                 ]);
              }
          
@@ -648,7 +653,7 @@ public function update_coordinator(Request $request){
 
     public function removeallimage(){
         $sportsid = Auth::user()->sports_id;
-        $carousel = Carousel::where('sports_id',$sportsid)->get();
+        $carousel = Carousel::where('sports_id',$sportsid)->where('batch',session()->get('batch'))->get();
         try {
             foreach($carousel as $img){
         
@@ -662,7 +667,7 @@ public function update_coordinator(Request $request){
         }
      
 
-        Carousel::where('sports_id',$sportsid)->delete();
+        Carousel::where('sports_id',$sportsid)->where('batch',session()->get('batch'))->delete();
         return redirect(route('e.homepage'))->with('Success_image','Carousel Image Removed Successfully!');
 
     }
@@ -679,7 +684,7 @@ public function update_coordinator(Request $request){
         $pt = Participant::where('sports_id',$sportsid)->where('isverified',2)->get();
         $user = User::all();
         
-        $delete = DB::select('select * from teams where id not in (select team from participants where sports_id ='.$sportsid.' )');
+        $delete = DB::select('select * from teams where id not in (select team from participants where sports_id ='.$sportsid.' and batch = '.session()->get('batch').') and batch = '.session()->get('batch').' ');
         return view('Event.team',compact('myevent','college','data','count','allteam','pt','user','delete'));
     }
 
@@ -702,7 +707,7 @@ public function update_coordinator(Request $request){
         $id =$request->id;
         $sportevent = Auth::user()->sports_id;
 
-        $existingP = DB::select('select * from participants where team ='.$moveto.' and sports_id ='.$sportevent.' ');
+        $existingP = DB::select('select * from participants where team ='.$moveto.' and sports_id ='.$sportevent.' and batch = '.session()->get('batch').' ');
 
         $defaultcount = Team::findorFail($moveto)->maxcount;
         $totalEntry = count($existingP) + 1;
@@ -762,7 +767,7 @@ public function update_coordinator(Request $request){
         $sportevent= Sportevent::where('CollegeId',$collegeid)->get(); 
        
        
-        $user =DB::select('select * from users where id in (select user_id from participants where  isverified = 2 and sports_id ='.$sportsid.' and team='.$id.' )  '); 
+        $user =DB::select('select * from users where id in (select user_id from participants where  isverified = 2 and sports_id ='.$sportsid.' and team='.$id.'  and batch = '.session()->get('batch').' )  '); 
         $allteam = Team::where('sports_id',$sportsid)->get();
         return view('Event.sortparticipants',compact('college','myevent','count','user','participants','sportevent','available_slots','team','allteam'));
     }
@@ -816,16 +821,16 @@ public function update_coordinator(Request $request){
        /*    $sportsdata = Sportevent::where('CollegeId',$collegeid)->get(); */
           $sportevent = Auth::user()->sports_id;
         
-          $data = DB::select('select * from teams where sports_id ='.$sportevent.' and id in (select team from participants where sports_id ='.$sportevent.' and isverified = 2 ) and id not in (select team from tallies where sports_id ='.$sportevent.' and match_id in (select id from games where status in (0,1) )); ');
+          $data = DB::select('select * from teams where  batch = '.session()->get('batch').' and  sports_id ='.$sportevent.' and id in (select team from participants where sports_id ='.$sportevent.' and isverified = 2 and batch = '.session()->get('batch').' ) and id not in (select team from tallies where batch = '.session()->get('batch').' and sports_id ='.$sportevent.' and match_id in (select id from games where status in (0,1) )); ');
 
-        $individual = DB::select('select * from users where user_type ="student" and id in (select user_id from participants where sports_id ='.$sportevent.' and isverified = 2  and team= 0) and id not in (select user_id from tallies where sports_id ='.$sportevent.')  ');
+        $individual = DB::select('select * from users where user_type ="student" and id in (select user_id from participants where sports_id ='.$sportevent.' and isverified = 2  and team= 0 and batch = '.session()->get('batch').') and id not in (select user_id from tallies where sports_id ='.$sportevent.')  ');
           
         $selected = $request->input('selected_ids');
 
        
-        $eventname = DB::select('select name,nop from sportevents where id ='.$sportevent.'  ');
+        $eventname = DB::select('select name,nop from sportevents where id ='.$sportevent.' and batch = '.session()->get('batch').'  ');
  
-        $numofparticipants = DB::select('select * from participants where sports_id ='.$sportevent.' and isverified = 2');
+        $numofparticipants = DB::select('select * from participants where sports_id ='.$sportevent.' and isverified = 2 and batch = '.session()->get('batch').'');
 
         foreach ($eventname as $key => $value) {
             $ename= $value->name;
@@ -856,6 +861,7 @@ public function update_coordinator(Request $request){
                 'match_id'=>$matchid,
                 'isofficial'=>0,
                 'tally'=>0,
+                'batch'=>session()->get('batch')
                ]);
             }
             return redirect(route('e.tally'))->with('Success','Match Set Successfully!');
@@ -870,6 +876,7 @@ public function update_coordinator(Request $request){
                     'match_id'=>$matchid,
                     'isofficial'=>0,
                     'tally'=>0,
+                    'batch'=>session()->get('batch')
                    ]);
             }
             return redirect(route('e.tally'))->with('Success','Match Set Successfully!');

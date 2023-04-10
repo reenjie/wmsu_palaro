@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             'sports_id' => null,
             'isactive' => null,
             'date_added' => now(),
+            'batch'=>1
         ]);
         Carousel::create([
             'images' => '1663158130.jpg',
@@ -50,6 +51,7 @@ class DatabaseSeeder extends Seeder
             'sports_id' => null,
             'isactive' => null,
             'date_added' => now(),
+            'batch'=>1
         ]);
         Carousel::create([
             'images' => '1663158141.jpg',
@@ -57,6 +59,7 @@ class DatabaseSeeder extends Seeder
             'sports_id' => null,
             'isactive' => null,
             'date_added' => now(),
+            'batch'=>1
         ]);
 
         Videolink::create([
@@ -66,6 +69,7 @@ class DatabaseSeeder extends Seeder
             'event' => 0,
             'CollegeId' => 0,
             'date_added' => now(),
+            'batch'=>1
         ]);
 
         Batch::create([

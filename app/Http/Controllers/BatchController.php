@@ -22,6 +22,14 @@ class BatchController extends Controller
 
     public function fetch(Request $request)
     {
-        dd($request);
+        $id = $request->id;
+        session(['batch' => $id]);
+        Batch::query()->update([
+            'status'=>0
+        ]);
+        Batch::findorFail($id)->update([
+            'status'=>1
+        ]);
+        return redirect()->back()->with('success', 'Batch Fetched successfully!');
     }
 }

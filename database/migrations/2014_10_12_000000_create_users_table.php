@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('fl');
             $table->datetime('date_register');
             $table->text('image')->nullable();
-            $table->integer('batch');
+           
         });
     }
 
