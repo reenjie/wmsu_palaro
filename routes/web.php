@@ -45,6 +45,8 @@ Route::get('/', function () {
     session(['token' => '1//0eLcBmdoQpT4RCgYIARAAGA4SNwF-L9IrBUtf0UgqM_3w6wGXn4cc_S1YGL1qNhXdwzrpHsx21NBI7pwyVpbSfRIdtFwpm803PYY']);
 
 
+ 
+
     $carousel = Carousel::where('sports_id', null)->where('batch',$batchactive[0]->id)->get();
     $videos = Videolink::where('batch',$batchactive[0]->id)->get();
     $count = 0;

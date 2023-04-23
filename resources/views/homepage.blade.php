@@ -9,8 +9,8 @@
       <div class="carousel-inner shadow-sm revealc " id="c-inner">
 
 
-        @foreach ($carousel as $row )
-        @if($row->id == 1)
+        @foreach ($carousel as $key => $row )
+        @if($key == 0)
         <div class="carousel-item active ">
 
           @if(file_exists(public_path().'/assets/img/'.$row->images))

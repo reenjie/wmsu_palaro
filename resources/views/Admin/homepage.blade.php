@@ -33,7 +33,7 @@
                                                 
                                                 @if(file_exists(public_path().'/assets/img/'.$row->images))
                                             
-                                                <img src="{{asset('public/assets/img').'/'.$row->images}}" class="card-img-top" alt="" style="height: 200px">
+                                                <img src="{{asset('assets/img').'/'.$row->images}}" class="card-img-top" alt="" style="height: 200px">
                                                      
                                                     @else
                                                       
