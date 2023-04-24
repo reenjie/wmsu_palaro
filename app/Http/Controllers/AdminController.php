@@ -181,7 +181,7 @@ public function deletecollage($id){
     public function coordinators(){
         $data = User::all();
         $college = College::all();
-        $checking_availability = DB::select('select * from colleges where id not in (select CollegeId from users where user_type ="coordinator") and batch = '.session()->get('batch').' ');
+        $checking_availability = DB::select('select * from colleges where id not in (select CollegeId from users where user_type ="coordinator")  ');
         $count = count($checking_availability);
         return view('Admin.coordinator',compact('data','college','count'));
     }
